@@ -1,0 +1,64 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+
+# virusPlot
+
+<!-- badges: start -->
+<!-- badges: end -->
+Visualization of virus insertion information
+
+## :writing_hand: Authors
+Erqiang Hu
+
+ Department of Bioinformatics, School of Basic Medical Sciences, Southern Medical University.
+
+
+
+##  :hammer: Installation
+```{r eval=FALSE}
+devtools::install_github("huerqiang/virusPlot")
+```
+
+## Example
+
+```{r fig.width=7, fig.height=7}
+library(virusPlot)
+virus_info <- data.frame(
+         gene = c("E6", "E7", "E1", "E2", "E4", "E5", "L2", "L1", "LCR"),
+         start = c(83, 562, 865, 2755, 3332, 3849, 4236, 5560, 7200),
+         end = c(559, 858, 2813, 3852, 3619, 4100, 5657, 7155, 7904))
+
+insert_num <- data.frame(start = seq(1, 7801, 100),
+    end = seq(101, 7901, 100),
+    num = sample(1:28, 79, replace = TRUE))
+circle_virus(virus_info, insert_num)
+```
+
+```{r fig.width=10, fig.height=7}
+data(insert_info)
+virus_info <- data.frame(
+      gene = c("E6", "E7", "E1", "E2", "E4", "E5", "L2", "L1", "LCR"),
+      start = c(83, 562, 865, 2755, 3332, 3849, 4236, 5560, 7200),
+      end = c(559, 858, 2813, 3852, 3619, 4100, 5657, 7155, 7904))
+strudel_plot(virus_info, insert_info)
+```
+
+
+```{r}
+sessionInfo()
+```
+
+
