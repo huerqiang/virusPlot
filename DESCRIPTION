@@ -10,7 +10,14 @@ LazyData: false
 Depends: 
     R (>= 2.10)
 Imports: 
+    aplot,
     ggplot2,
     ggsci,
-    shadowtext
+    grid,
+    shadowtext,
+    utils
 RoxygenNote: 7.2.3
+Suggests: 
+    aplotExtra,
+    ggfun,
+    tidyr
