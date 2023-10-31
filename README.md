@@ -76,14 +76,16 @@ sessionInfo()
 #> [1] virusPlot_0.1.0
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] vctrs_0.6.3       cli_3.6.1         knitr_1.44        rlang_1.1.1      
-#>  [5] xfun_0.39         generics_0.1.3    labeling_0.4.3    glue_1.6.2       
-#>  [9] colorspace_2.1-0  htmltools_0.5.5   scales_1.2.1      fansi_1.0.4      
-#> [13] rmarkdown_2.25    grid_4.3.1        shadowtext_0.1.2  evaluate_0.21    
-#> [17] munsell_0.5.0     tibble_3.2.1      fastmap_1.1.1     yaml_2.3.7       
-#> [21] lifecycle_1.0.3   compiler_4.3.1    dplyr_1.1.3       pkgconfig_2.0.3  
-#> [25] rstudioapi_0.15.0 farver_2.1.1      digest_0.6.33     R6_2.5.1         
-#> [29] tidyselect_1.2.0  utf8_1.2.3        pillar_1.9.0      magrittr_2.0.3   
-#> [33] ggsci_3.0.0       withr_2.5.0       tools_4.3.1       gtable_0.3.4     
-#> [37] ggplot2_3.4.3
+#>  [1] gtable_0.3.4       dplyr_1.1.3        compiler_4.3.1     tidyselect_1.2.0  
+#>  [5] aplot_0.2.2        gridGraphics_0.5-1 ggplotify_0.1.2    ggfun_0.1.3       
+#>  [9] scales_1.2.1       yaml_2.3.7         fastmap_1.1.1      ggplot2_3.4.4     
+#> [13] R6_2.5.1           labeling_0.4.3     generics_0.1.3     patchwork_1.1.3   
+#> [17] knitr_1.44         yulab.utils_0.1.0  tibble_3.2.1       munsell_0.5.0     
+#> [21] shadowtext_0.1.2   pillar_1.9.0       rlang_1.1.1        utf8_1.2.4        
+#> [25] cachem_1.0.8       ggsci_3.0.0        xfun_0.40          fs_1.6.3          
+#> [29] memoise_2.0.1      cli_3.6.1          withr_2.5.1        magrittr_2.0.3    
+#> [33] digest_0.6.33      grid_4.3.1         rstudioapi_0.15.0  lifecycle_1.0.3   
+#> [37] vctrs_0.6.4        evaluate_0.22      glue_1.6.2         farver_2.1.1      
+#> [41] fansi_1.0.5        colorspace_2.1-0   rmarkdown_2.25     tools_4.3.1       
+#> [45] pkgconfig_2.0.3    htmltools_0.5.6.1
 ```

@@ -108,7 +108,9 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     hostfile$ymin <- -max_reads*2.5
     hostfile$xmin <- hostfile$start
     hostfile$xmax <- hostfile$end
-    p <- p + geom_rect(data = hostfile, mapping = aes(ymin=ymin, ymax=ymax, xmin=xmin,  xmax = xmax), fill = host_color) +
+
+    hostfile2 <- hostfile[seq(1, nrow(hostfile), 2), ]
+    p <- p + geom_rect(data = hostfile2, mapping = aes(ymin=ymin, ymax=ymax, xmin=xmin,  xmax = xmax), fill = host_color) +
         geom_point(data = insert_info_host, aes(x = host_loc, y = log10reads2))  +
         annotate("text", x = max(virus_info$end) * 1.1, y = -max_reads*2, label = label_host, color = "black", size = 6.5) +
         annotate("text", x = 0, y = -max_reads*2.65, label = "Chr.", color = "black", size = 6.5) +
