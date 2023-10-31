@@ -34,10 +34,11 @@ oncoprint_row_order = function(count_matrix, n_mut) {
 #' @param mat matrix, each row is a gene,
 #' and each column is a sample
 #' @param varis_color namesd vector, color of varis
+#' @param na.value color of na value.
 #'
 #' @return a gg object
 #' @export
-oncoplot_main <- function(mat, varis_color) {
+oncoplot_main <- function(mat, varis_color, na.value = "#F3F5F7") {
     oncoplot_scale <- getFromNamespace("oncoplot_scale", "aplotExtra")
     mat_01 <- matrix(0, nrow(mat), ncol(mat))
     colnames(mat_01) <- colnames(mat)
@@ -72,21 +73,38 @@ oncoplot_main <- function(mat, varis_color) {
     d$Gene <- factor(d$Gene, levels = rev(gene_level))
     d$Sample <- factor(d$Sample, levels = sample_level)
     p <- ggplot(d, aes(x=.data$Sample, y=.data$Gene, fill=.data$Type)) +
-        geom_tile(colour="white", linewidth=.05) +
+        # geom_tile(colour="white", linewidth=.05) +
+        geom_raster() +
         list(theme_minimal(), ggfun::theme_noxaxis(), theme(legend.position = "none", panel.grid.major = element_blank()),
           oncoplot_scale(continuous = FALSE, scale='y'),
-          oncoplot_fill(varis_color = varis_color))+
+          oncoplot_fill(varis_color = varis_color, na.value = na.value))+
         theme(legend.position = "bottom",
             axis.text.y.left=element_text(face='italic'))
     leg <- ggfun::get_legend(p)
     p + theme(legend.position = "none",
             plot.margin = margin(b = 60, r = 5)) +
-        annotation_custom(leg, ymin=-4.5, ymax=-1.5) +
-        coord_cartesian(clip='off')
-
-
+        annotation_custom(leg, ymin=-3, ymax=-1.5) +
+        coord_cartesian(clip='off') +
+    ylab("") +
+    xlab("")
 }
 
+oncoprint_row_order = function(count_matrix, n_mut) {
+    order(rowSums(count_matrix), n_mut, decreasing = TRUE)
+}
+oncoprint_column_order = function(count_matrix, row_order) {
+    scoreCol = function(x) {
+    	score = 0
+    	for(i in 1:length(x)) {
+    		if(x[i]) {
+    			score = score + 2^(length(x)-i*1/x[i])
+    		}
+    	}
+    	return(score)
+    }
+    scores = apply(count_matrix[row_order, ,drop = FALSE], 2, scoreCol)
+    order(scores, decreasing=TRUE)
+}
 
 #' oncoplot_sample
 #'
@@ -103,21 +121,6 @@ oncoplot_sample <- function(mat, varis_color) {
     rownames(mat_01) <- rownames(mat)
     mat_01[mat != " "] <- 1
 
-
-    oncoprint_column_order = function(count_matrix, row_order) {
-	    scoreCol = function(x) {
-	    	score = 0
-	    	for(i in 1:length(x)) {
-	    		if(x[i]) {
-	    			score = score + 2^(length(x)-i*1/x[i])
-	    		}
-	    	}
-	    	return(score)
-	    }
-	    scores = apply(count_matrix[row_order, ,drop = FALSE], 2, scoreCol)
-	    order(scores, decreasing=TRUE)
-    }
-
     n_mut <- rowSums(mat_01)
 
     row_order <- oncoprint_row_order(count_matrix = mat_01, n_mut = n_mut)
@@ -131,12 +134,15 @@ oncoplot_sample <- function(mat, varis_color) {
     colnames(dMat) <- colnames(mat)
     for (i in colnames(mat)) {
         tableDf <- mat[, i] |> table() |> as.data.frame()
+        tableDf[, 1] <- as.character(tableDf[, 1])
         dMat[tableDf[, 1], i] <- dMat[tableDf[, 1], i] + tableDf[, 2]
     }
     dMat <- as.data.frame(dMat)
     dMat$Type <- rownames(dMat)
     d <- tidyr::pivot_longer(dMat,cols =-c('Type'), names_to = "Sample",values_to = "Freq")
-    d <- d[d$Type != " ", ]
+    d <- d[d$Type != " ", ]  # d的数据已经是错的了， dMat也是错的。
+
+
     d$Sample <- factor(d$Sample, levels = sample_level)
 
 
@@ -182,25 +188,6 @@ oncoplot_gene <- function(mat, ylab = 'percentage', varis_color) {
     colnames(mat_01) <- colnames(mat)
     rownames(mat_01) <- rownames(mat)
     mat_01[mat != " "] <- 1
-
-
-    oncoprint_row_order = function(count_matrix, n_mut) {
-	    order(rowSums(count_matrix), n_mut, decreasing = TRUE)
-    }
-    oncoprint_column_order = function(count_matrix, row_order) {
-	    scoreCol = function(x) {
-	    	score = 0
-	    	for(i in 1:length(x)) {
-	    		if(x[i]) {
-	    			score = score + 2^(length(x)-i*1/x[i])
-	    		}
-	    	}
-	    	return(score)
-	    }
-	    scores = apply(count_matrix[row_order, ,drop = FALSE], 2, scoreCol)
-	    order(scores, decreasing=TRUE)
-    }
-
     n_mut <- rowSums(mat_01)
 
     row_order <- oncoprint_row_order(count_matrix = mat_01, n_mut = n_mut)
@@ -296,13 +283,14 @@ oncoplot_clinical <- function(clinical_data, mapping, clinical_color = NULL) {
 #' @param clinical dataframe of clinical data,
 #' the first column is sample ID.
 #' @param clinical_color namesd vector, color of clinical varis.
+#' @param na.value color of na value.
 #' @import aplot
 #'
 #' @return an aplot object
 #' @export
-oncoplot <- function(mat, varis_color = NULL, clinical, clinical_color = NULL) {
+oncoplot <- function(mat, varis_color = NULL, clinical, clinical_color = NULL, na.value) {
     # library(aplot)
-    p_main <- oncoplot_main(mat, varis_color = varis_color)
+    p_main <- oncoplot_main(mat, varis_color = varis_color, na.value = na.value)
     p_top <- oncoplot_sample(mat, varis_color = varis_color)
     p_right <- oncoplot_gene(mat, ylab = 'percentage', varis_color = varis_color)
     p_spacer <- ggplot() + ggfun::theme_transparent()

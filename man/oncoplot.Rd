@@ -4,7 +4,7 @@
 \alias{oncoplot}
 \title{main function of oncoplot}
 \usage{
-oncoplot(mat, varis_color = NULL, clinical, clinical_color = NULL)
+oncoplot(mat, varis_color = NULL, clinical, clinical_color = NULL, na.value)
 }
 \arguments{
 \item{mat}{matrix, each row is a gene,
@@ -16,6 +16,8 @@ and each column is a sample}
 the first column is sample ID.}
 
 \item{clinical_color}{namesd vector, color of clinical varis.}
+
+\item{na.value}{color of na value.}
 }
 \value{
 an aplot object

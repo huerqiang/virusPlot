@@ -4,13 +4,15 @@
 \alias{oncoplot_main}
 \title{main plot}
 \usage{
-oncoplot_main(mat, varis_color)
+oncoplot_main(mat, varis_color, na.value = "#bdbdbd")
 }
 \arguments{
 \item{mat}{matrix, each row is a gene,
 and each column is a sample}
 
 \item{varis_color}{namesd vector, color of varis}
+
+\item{na.value}{color of na value.}
 }
 \value{
 a gg object
