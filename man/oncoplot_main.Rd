@@ -4,7 +4,7 @@
 \alias{oncoplot_main}
 \title{main plot}
 \usage{
-oncoplot_main(mat, varis_color, na.value = "#bdbdbd")
+oncoplot_main(mat, varis_color, na.value = "#F3F5F7")
 }
 \arguments{
 \item{mat}{matrix, each row is a gene,

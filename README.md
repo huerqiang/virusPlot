@@ -51,6 +51,18 @@ strudel_plot(virus_info, insert_info)
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
 ``` r
+data(vcf_matrix)
+data(col)
+data(pdata)
+data(cli_colors)
+oncoplot(vcf_matrix, varis_color = col, 
+    clinical = pdata[, c("ID", "gender", "race", "stage", "hpv16")], 
+    clinical_color = cli_colors, na.value = "#F3F5F7")
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+``` r
 sessionInfo()
 #> R version 4.3.1 (2023-06-16 ucrt)
 #> Platform: x86_64-w64-mingw32/x64 (64-bit)
@@ -76,16 +88,19 @@ sessionInfo()
 #> [1] virusPlot_0.1.0
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] gtable_0.3.4       dplyr_1.1.3        compiler_4.3.1     tidyselect_1.2.0  
-#>  [5] aplot_0.2.2        gridGraphics_0.5-1 ggplotify_0.1.2    ggfun_0.1.3       
-#>  [9] scales_1.2.1       yaml_2.3.7         fastmap_1.1.1      ggplot2_3.4.4     
-#> [13] R6_2.5.1           labeling_0.4.3     generics_0.1.3     patchwork_1.1.3   
-#> [17] knitr_1.44         yulab.utils_0.1.0  tibble_3.2.1       munsell_0.5.0     
-#> [21] shadowtext_0.1.2   pillar_1.9.0       rlang_1.1.1        utf8_1.2.4        
-#> [25] cachem_1.0.8       ggsci_3.0.0        xfun_0.40          fs_1.6.3          
-#> [29] memoise_2.0.1      cli_3.6.1          withr_2.5.1        magrittr_2.0.3    
-#> [33] digest_0.6.33      grid_4.3.1         rstudioapi_0.15.0  lifecycle_1.0.3   
-#> [37] vctrs_0.6.4        evaluate_0.22      glue_1.6.2         farver_2.1.1      
-#> [41] fansi_1.0.5        colorspace_2.1-0   rmarkdown_2.25     tools_4.3.1       
-#> [45] pkgconfig_2.0.3    htmltools_0.5.6.1
+#>  [1] yulab.utils_0.1.0  tidyr_1.3.0        utf8_1.2.4         generics_0.1.3    
+#>  [5] ggplotify_0.1.2    maftools_2.18.0    lattice_0.22-5     digest_0.6.33     
+#>  [9] magrittr_2.0.3     shadowtext_0.1.2   evaluate_0.22      grid_4.3.1        
+#> [13] RColorBrewer_1.1-3 fastmap_1.1.1      Matrix_1.6-1.1     survival_3.5-7    
+#> [17] gridExtra_2.3      purrr_1.0.2        fansi_1.0.5        aplot_0.2.2       
+#> [21] scales_1.2.1       ggstar_1.0.4       cli_3.6.1          rlang_1.1.1       
+#> [25] munsell_0.5.0      splines_4.3.1      withr_2.5.1        cachem_1.0.8      
+#> [29] yaml_2.3.7         DNAcopy_1.76.0     tools_4.3.1        memoise_2.0.1     
+#> [33] dplyr_1.1.3        colorspace_2.1-0   ggplot2_3.4.4      forcats_1.0.0     
+#> [37] vctrs_0.6.4        R6_2.5.1           gridGraphics_0.5-1 lifecycle_1.0.3   
+#> [41] fs_1.6.3           ggfun_0.1.3        pkgconfig_2.0.3    pillar_1.9.0      
+#> [45] gtable_0.3.4       glue_1.6.2         data.table_1.14.8  aplotExtra_0.0.2  
+#> [49] xfun_0.40          tibble_3.2.1       tidyselect_1.2.0   rstudioapi_0.15.0 
+#> [53] knitr_1.44         farver_2.1.1       htmltools_0.5.6.1  patchwork_1.1.3   
+#> [57] rmarkdown_2.25     ggsci_3.0.0        labeling_0.4.3     compiler_4.3.1
 ```

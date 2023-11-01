@@ -56,6 +56,15 @@ virus_info <- data.frame(
 strudel_plot(virus_info, insert_info)
 ```
 
+```{r fig.width=10, fig.height=10}
+data(vcf_matrix)
+data(col)
+data(pdata)
+data(cli_colors)
+oncoplot(vcf_matrix, varis_color = col, 
+    clinical = pdata[, c("ID", "gender", "race", "stage", "hpv16")], 
+    clinical_color = cli_colors, na.value = "#F3F5F7")
+```
 
 ```{r}
 sessionInfo()
