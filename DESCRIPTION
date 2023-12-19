@@ -2,7 +2,10 @@ Package: virusPlot
 Type: Package
 Title: Visualization of virus insertion information
 Version: 0.1.0
-Authors@R: person(given = "Erqiang", family = "Hu", email = "13766876214@163.com", role  = c("aut", "cre"), comment = c(ORCID = "0000-0002-1798-7513"))
+Authors@R: c(
+      person(given = "Erqiang", family = "Hu", email = "13766876214@163.com", role  = c("aut", "cre"), comment = c(ORCID = "0000-0002-1798-7513")),
+      person("Shanye", "Yin", email = "shanye.yin@einsteinmed.edu ", role = c("aut", "ctb"))
+      )
 Description: Analysis and visualization of virus insertion information.
 License: Artistic-2.0
 Encoding: UTF-8

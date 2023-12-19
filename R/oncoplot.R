@@ -139,7 +139,7 @@ oncoplot_sample <- function(mat, varis_color) {
     dMat <- as.data.frame(dMat)
     dMat$Type <- rownames(dMat)
     d <- tidyr::pivot_longer(dMat,cols =-c('Type'), names_to = "Sample",values_to = "Freq")
-    d <- d[d$Type != " ", ]  # d的数据已经是错的了， dMat也是错的。
+    d <- d[d$Type != " ", ] 
 
 
     d$Sample <- factor(d$Sample, levels = sample_level)

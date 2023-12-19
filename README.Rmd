@@ -21,9 +21,11 @@ knitr::opts_chunk$set(
 Visualization of virus insertion information
 
 ## :writing_hand: Authors
-Erqiang Hu
+Erqiang Hu: Department of Bioinformatics, School of Basic Medical Sciences, Southern
+Medical University.
 
- Department of Bioinformatics, School of Basic Medical Sciences, Southern Medical University.
+Shanye Yin: Albert Einstein College of Medicine
+
 
 
 
