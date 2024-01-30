@@ -36,6 +36,23 @@ devtools::install_github("huerqiang/virusPlot")
 
 ## Example
 
+Download virus genome
+```{r}
+library(virusPlot)
+genome <- get_virus_genom(accession_number = "NC_001526.2",
+    email = "13766876214@163.com")
+head(genome)
+```
+
+Download virus annotation
+```{r}
+gene_features <- get_virus_annotation(accession_number = "NC_001526.2",
+    email = "13766876214@163.com")
+virus_info <- deal_virus_annotation(gene_features)
+virus_info
+```
+
+
 ```{r fig.width=7, fig.height=7}
 library(virusPlot)
 virus_info <- data.frame(

@@ -23,6 +23,41 @@ devtools::install_github("huerqiang/virusPlot")
 
 ## Example
 
+Download virus genome
+
+``` r
+library(virusPlot)
+genome <- get_virus_genom(accession_number = "NC_001526.2",
+    email = "13766876214@163.com")
+head(genome)
+#>                                                                       V1
+#> 1             >NC_001526.2 Human papillomavirus type 16, complete genome
+#> 2 ACTACAATAATTCATGTATAAAACTAAGGGCGTAACCGAAATCGGTTGAACCGAAACCGGTTAGTATAAA
+#> 3 AGCAGACATTTTATGCACCAAAAGAGAACTGCAATGTTTCAGGACCCACAGGAGCGACCCAGAAAGTTAC
+#> 4 CACAGTTATGCACAGAGCTGCAAACAACTATACATGATATAATATTAGAATGTGTGTACTGCAAGCAACA
+#> 5 GTTACTGCGACGTGAGGTATATGACTTTGCTTTTCGGGATTTATGCATAGTATATAGAGATGGGAATCCA
+#> 6 TATGCTGTATGTGATAAATGTTTAAAGTTTTATTCTAAAATTAGTGAGTATAGACATTATTGTTATAGTT
+```
+
+Download virus annotation
+
+``` r
+gene_features <- get_virus_annotation(accession_number = "NC_001526.2",
+    email = "13766876214@163.com")
+#> No encoding supplied: defaulting to UTF-8.
+virus_info <- deal_virus_annotation(gene_features)
+virus_info
+#>   gene start  end
+#> 1   E6    83  559
+#> 2   E7   562  858
+#> 3   E1   865 2813
+#> 4   E2  2755 3852
+#> 5   E4  3332 3619
+#> 6   E5  3849 4100
+#> 7   L2  4236 5657
+#> 8   L1  5560 7155
+```
+
 ``` r
 library(virusPlot)
 virus_info <- data.frame(
@@ -37,7 +72,7 @@ circle_virus(virus_info, insert_num)
 #> Warning: Removed 1 rows containing missing values (`geom_col()`).
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
 
 ``` r
 data(insert_info)
@@ -48,7 +83,7 @@ virus_info <- data.frame(
 strudel_plot(virus_info, insert_info)
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
 ``` r
 data(vcf_matrix)
@@ -60,7 +95,7 @@ oncoplot(vcf_matrix, varis_color = col,
     clinical_color = cli_colors, na.value = "#F3F5F7")
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ``` r
 sessionInfo()
@@ -88,20 +123,21 @@ sessionInfo()
 #> [1] virusPlot_0.1.0
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] yulab.utils_0.1.1  tidyr_1.3.0        utf8_1.2.4         generics_0.1.3    
+#>  [1] yulab.utils_0.0.9  tidyr_1.3.0        utf8_1.2.4         generics_0.1.3    
 #>  [5] ggplotify_0.1.2    maftools_2.18.0    lattice_0.21-9     digest_0.6.33     
-#>  [9] magrittr_2.0.3     shadowtext_0.1.2   evaluate_0.23      grid_4.3.2        
-#> [13] RColorBrewer_1.1-3 fastmap_1.1.1      Matrix_1.6-1.1     survival_3.5-7    
-#> [17] gridExtra_2.3      purrr_1.0.2        fansi_1.0.5        aplot_0.2.2       
-#> [21] scales_1.2.1       ggstar_1.0.4       cli_3.6.1          rlang_1.1.1       
-#> [25] munsell_0.5.0      splines_4.3.2      withr_2.5.2        cachem_1.0.8      
-#> [29] yaml_2.3.7         DNAcopy_1.76.0     tools_4.3.2        memoise_2.0.1     
-#> [33] dplyr_1.1.3        colorspace_2.1-0   ggplot2_3.4.4      forcats_1.0.0     
-#> [37] vctrs_0.6.4        R6_2.5.1           gridGraphics_0.5-1 lifecycle_1.0.4   
-#> [41] fs_1.6.3           ggfun_0.1.3        pkgconfig_2.0.3    pillar_1.9.0      
-#> [45] gtable_0.3.4       glue_1.6.2         data.table_1.14.8  aplotExtra_0.0.2  
-#> [49] xfun_0.40          tibble_3.2.1       tidyselect_1.2.0   highr_0.10        
-#> [53] rstudioapi_0.15.0  knitr_1.45         farver_2.1.1       htmltools_0.5.7   
-#> [57] patchwork_1.1.3    rmarkdown_2.25     ggsci_3.0.0        labeling_0.4.3    
-#> [61] compiler_4.3.2
+#>  [9] magrittr_2.0.3     shadowtext_0.1.2   RColorBrewer_1.1-3 evaluate_0.23     
+#> [13] grid_4.3.2         fastmap_1.1.1      Matrix_1.6-4       jsonlite_1.8.8    
+#> [17] survival_3.5-7     gridExtra_2.3      httr_1.4.7         purrr_1.0.2       
+#> [21] fansi_1.0.6        aplot_0.2.1        scales_1.3.0       ggstar_1.0.4      
+#> [25] XML_3.99-0.14      cli_3.6.2          rlang_1.1.3        splines_4.3.2     
+#> [29] munsell_0.5.0      withr_3.0.0        cachem_1.0.8       yaml_2.3.7        
+#> [33] DNAcopy_1.76.0     tools_4.3.2        memoise_2.0.1      dplyr_1.1.4       
+#> [37] colorspace_2.1-0   ggplot2_3.4.4      forcats_1.0.0      curl_5.1.0        
+#> [41] vctrs_0.6.5        R6_2.5.1           gridGraphics_0.5-1 lifecycle_1.0.4   
+#> [45] ggfun_0.1.3        pkgconfig_2.0.3    pillar_1.9.0       rentrez_1.2.3     
+#> [49] gtable_0.3.4       data.table_1.14.8  glue_1.7.0         aplotExtra_0.0.2  
+#> [53] xfun_0.40          tibble_3.2.1       tidyselect_1.2.0   highr_0.10        
+#> [57] rstudioapi_0.15.0  knitr_1.45         farver_2.1.1       htmltools_0.5.7   
+#> [61] patchwork_1.1.3    rmarkdown_2.25     ggsci_3.0.0        labeling_0.4.3    
+#> [65] compiler_4.3.2
 ```

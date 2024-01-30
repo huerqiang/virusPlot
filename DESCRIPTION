@@ -17,6 +17,8 @@ Imports:
     ggplot2,
     ggsci,
     grid,
+    httr,
+    rentrez,
     shadowtext,
     utils
 RoxygenNote: 7.2.3
