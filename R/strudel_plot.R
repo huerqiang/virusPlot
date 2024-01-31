@@ -10,9 +10,19 @@
 #' @param host_color color of host rect.
 #' @param label_virus label of virus.
 #' @param label_host label of host.
+#' @param hot_gene number of insert hot genes.
+#' @param size_gene size of gene labels.
+#' @param size_label size of label_virus and label_host.
 #' @import ggplot2
 #' @importFrom utils data
-#'
+#' @importFrom methods is
+#' @importFrom GenomicRanges GRanges
+#' @importFrom IRanges IRanges
+#' @importFrom ChIPseeker annotatePeak
+#' @importFrom ChIPseeker annotatePeak
+#' @importFrom org.Hs.eg.db org.Hs.eg.db
+#' @importFrom ggrepel geom_text_repel
+#' @importFrom TxDb.Hsapiens.UCSC.hg38.knownGene TxDb.Hsapiens.UCSC.hg38.knownGene
 #' @return a gg object
 #' @export
 #'
@@ -24,8 +34,9 @@
 #'       end = c(559, 858, 2813, 3852, 3619, 4100, 5657, 7155, 7904))
 #' p <- strudel_plot(virus_info, insert_info)
 strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
-    host_color = "#EAFEFF", label_virus = "HPV16", label_host = "Host") {
-    start <- num <- ymin <- ymax <- xmin <- xmax <- fill <- x <- gene <- NULL
+    host_color = "#EAFEFF", label_virus = "HPV16", label_host = "Host", hot_gene = 5,
+    size_gene = 6.5, size_label = 6.5) {
+    start <- num <- ymin <- ymax <- xmin <- xmax <- fill <- x <- gene <- SYMBOL <- NULL
     label <- hpv_loc <- y <- log10reads <- host_loc <- log10reads2 <- NULL
     virus_info <- as.data.frame(virus_info[, seq_len(3)])
     colnames(virus_info) <- c("gene", "start", "end")
@@ -69,10 +80,10 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     rect2_df <- data.frame(ymin = 0, ymax = max_reads, xmin = virus_info$start, xmax = virus_info$end)
     rect2_df <- rect2_df[seq(1, nrow(rect2_df), 2), ]
     p <- ggplot() + geom_rect(data = rect_df, mapping = aes(ymin = ymin, ymax = ymax, xmin = xmin, xmax = xmax), fill = "#FFBDBD") +
-        geom_text(data = text_df, mapping = aes(x = x, y = y, label = label), color = "black", size = 6.5) +
+        geom_text(data = text_df, mapping = aes(x = x, y = y, label = label), color = "black", size = size_gene) +
         geom_rect(data = rect2_df, mapping = aes(ymin = ymin, ymax = ymax, xmin = xmin, xmax = xmax), fill = virus_color) +
         geom_point(data = insert_info, aes(x = hpv_loc, y = log10reads))  +
-        annotate("text", x = max(virus_info$end) * 1.1, y = max_reads/2, label = label_virus, color = "black", size = 6.5)
+        annotate("text", x = max(virus_info$end) * 1.1, y = max_reads/2, label = label_virus, color = "black", size = size_label)
     # data(UCSC.HG38.Human.CytoBandIdeogram, package = "RCircos")
     # cyto.info <- UCSC.HG38.Human.CytoBandIdeogram
     chr_length <- split(cyto.info$chromEnd, cyto.info$Chromosome) |> lapply(max) |> unlist()
@@ -127,7 +138,7 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     y_df <- data.frame(label = as.character(c(rev(seq_len(max_reads)), 0, seq_len(max_reads), 0)),
         x = -max_reads,
         y = c(rev(seq_len(max_reads)), 0, -((1.5*max_reads) : (2.5*max_reads))))
-    p + geom_text(data = text_df, aes(label = label, x = x, y = y),
+    p <- p + geom_text(data = text_df, aes(label = label, x = x, y = y),
                   size = 5.2, color = "black") +
                geom_text(data = y_df, aes(label = label, x = x, y = y)) +
                ylab("log10(supporting reads)") +
@@ -138,5 +149,52 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
                      axis.ticks.y = element_blank(),
                      axis.line = element_blank(),
                      axis.title.y = element_text(size = 20))
-
+    # hot gene anatation
+    ranges <- GRanges(
+        seqnames = insert_info_host$chr,
+        ranges = IRanges(start = insert_info_host$host_loc_old, end = insert_info_host$host_loc_old)
+    )
+    txdb_38 <- TxDb.Hsapiens.UCSC.hg38.knownGene
+    peakAnno1 <- annotatePeak(ranges, level = "gene", annotate_multiple_region = TRUE,
+                             TxDb=txdb_38, annoDb="org.Hs.eg.db", verbose = FALSE) |> 
+                 suppressMessages()      						 
+    peakAnno1 <- as.data.frame(peakAnno1)
+    peakAnno1$id <- paste(peakAnno1[, 1], peakAnno1[, 2], sep = "_") 
+    
+    
+    
+    insert_info_host$id <- paste(insert_info_host$chr, insert_info_host$host_loc_old, sep = "_")
+    insert_info_host <- insert_info_host[!duplicated(insert_info_host$id), ]
+    rownames(insert_info_host) <- insert_info_host$id
+    
+    peakAnno1$log10reads <- insert_info_host[peakAnno1$id, "log10reads"] 
+    peakAnno1$host_loc <- insert_info_host[peakAnno1$id, "host_loc"] 
+    
+    
+    peakAnno1 <- peakAnno1[, c("seqnames", "log10reads", "host_loc", "SYMBOL")]
+    peakAnno1 <- peakAnno1[order(peakAnno1$log10reads, decreasing = TRUE), ]
+    
+    genes <- NULL
+    if (is(hot_gene, "numeric")) {
+        genes <- unique(peakAnno1[, 4])[seq_len(hot_gene)]
+    }
+    if (is(hot_gene, "character")) {
+        genes <- intersect(hot_gene, peakAnno1[, 4])
+    }
+    if (!is.null(genes) && length(genes) > 0) {
+        peakAnno1 <- peakAnno1[peakAnno1$SYMBOL %in% genes, ]
+        peakAnno1 <- peakAnno1[!duplicated(peakAnno1$SYMBOL), ] 
+        # 怎么分层？同个染色体就分层？
+        # 不行，相邻染色体还是会覆盖，那么相邻染色体再弄个分层？
+        peakAnno1[, 1] <- as.character(peakAnno1[, 1])
+        peakAnno1_list <- split(peakAnno1, peakAnno1[, 1])
+        peakAnno1_list <- lapply(peakAnno1_list, function(x) {
+            x[, 5] <- -10.2 - 0.8 * seq_len(nrow(x)) 
+            return(x)
+        })
+        peakAnno1 <- do.call(rbind, peakAnno1_list)
+        colnames(peakAnno1)[5] <- "y"
+    }
+    p + ggrepel::geom_text_repel(data = peakAnno1, aes(label = SYMBOL, x = host_loc, y = y),
+              size = 5.2, color = "black")
 }

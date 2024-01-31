@@ -10,7 +10,10 @@ strudel_plot(
   virus_color = "#EAFEFF",
   host_color = "#EAFEFF",
   label_virus = "HPV16",
-  label_host = "Host"
+  label_host = "Host",
+  hot_gene = 5,
+  size_gene = 6.5,
+  size_label = 6.5
 )
 }
 \arguments{
@@ -29,6 +32,12 @@ the third column is the virus break site, and the fourth column is the number of
 \item{label_virus}{label of virus.}
 
 \item{label_host}{label of host.}
+
+\item{hot_gene}{number of insert hot genes.}
+
+\item{size_gene}{size of gene labels.}
+
+\item{size_label}{size of label_virus and label_host.}
 }
 \value{
 a gg object

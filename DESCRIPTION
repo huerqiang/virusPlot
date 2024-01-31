@@ -1,7 +1,7 @@
 Package: virusPlot
 Type: Package
 Title: Visualization of virus insertion information
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
       person(given = "Erqiang", family = "Hu", email = "13766876214@163.com", role  = c("aut", "cre"), comment = c(ORCID = "0000-0002-1798-7513")),
       person("Shanye", "Yin", email = "shanye.yin@einsteinmed.edu ", role = c("aut", "ctb"))
@@ -14,15 +14,25 @@ Depends:
     R (>= 2.10)
 Imports: 
     aplot,
+    ChIPseeker,
+    GenomicRanges,
     ggplot2,
+    ggrepel,
     ggsci,
     grid,
     httr,
+    IRanges,
+    methods,
+    org.Hs.eg.db,
     rentrez,
     shadowtext,
+    TxDb.Hsapiens.UCSC.hg38.knownGene,
     utils
 RoxygenNote: 7.2.3
 Suggests: 
     aplotExtra,
     ggfun,
+    knitr,
+    rmarkdown,
     tidyr
+VignetteBuilder: knitr

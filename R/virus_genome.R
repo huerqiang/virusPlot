@@ -17,13 +17,11 @@ get_virus_annotation <- function(accession_number, email, output = NULL) {
     db <- "nuccore"
     url <- paste0("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=", db, "&id=", accession_number, "&rettype=gp&retmode=text&email=", email)
     response <- GET(url)
+    gene_features <- NULL
     if (status_code(response) == 200) {
-        gene_features <- content(response, "text")
-        return(gene_features)
-    } else {
-        stop("Error downloading gene features.")
-    }
-    if (!is.null(gene_features)) {
+        gene_features <- content(x = response, as = "text", encoding = "UTF-8")
+    } 
+    if (!is.null(output)) {
         writeLines(gene_features, output)
     }
     return(gene_features)
@@ -71,8 +69,12 @@ deal_virus_annotation <- function(gene_features) {
     gene_lines2 <- gene_lines - 1
     bb <- data.frame(aa[gene_lines], aa[gene_lines2])
     bb <- bb[grep("gene", bb[, 2]), ]
-    bb[, 2] <- gsub("[]+gene[]+", "", bb[,2])
     bb[, 1] <- gsub(".*=", "", bb[, 1])
+    bb[, 2] <- gsub("[]+gene[]+", "", bb[,2])
+    bb[, 2] <- gsub(" ", "", bb[,2])
+    anno <- gsub("\\(.*", "\\1", bb[, 2])
+    anno[grep("\\(", bb[, 2], invert = TRUE)] <- ""
+    bb[, 1] <- paste0(bb[, 1], anno)
     se <- strsplit(bb[, 2], "\\.\\.") |> do.call(rbind, args = _)
     start <- gsub("[^0-9]", "", se[, 1]) |> as.numeric()
     end <- gsub("[^0-9]", "", se[, 2]) |> as.numeric()
