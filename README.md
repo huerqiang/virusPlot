@@ -86,7 +86,7 @@ gene_features <- get_virus_annotation(accession_number = "NC_001526.2",
     email = "13766876214@163.com")
 virus_info_NC_001526 <- deal_virus_annotation(gene_features)
 strudel_plot(virus_info = virus_info_NC_001526, insert_info, hot_gene = 5)
-#> >> done...                    2024-01-31 19:06:13
+#> >> done...                    2024-01-31 19:18:37
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
@@ -94,7 +94,7 @@ strudel_plot(virus_info = virus_info_NC_001526, insert_info, hot_gene = 5)
 ``` r
 strudel_plot(virus_info = virus_info_NC_001526, insert_info, 
              hot_gene = c( "SAV1", "ZPLD1", "CHMP6", "IRS4"))
-#> >> done...                    2024-01-31 19:06:42
+#> >> done...                    2024-01-31 19:19:07
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
