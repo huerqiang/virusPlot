@@ -1,11 +1,15 @@
 #' Strudel plot of virus insert
 #'
-#' @param virus_info The virus information data frame contains three columns.
+#' @param virus_info The virus information data frame contains at least three
+#' columns.
 #' The first column is the gene name, the second column is the start site,
 #' and the third column is the stop site.
-#' @param insert_info The virus insertion information data frame contains four columns.
-#' The first column is the chromosome, the second column is the host insertion site,
-#' the third column is the virus break site, and the fourth column is the number of reads.
+#' @param insert_info The virus insertion information data frame contains at
+#' least four columns.
+#' The first column is the chromosome,
+#' the second column is the host insertion site,
+#' the third column is the virus break site, and the fourth column is the
+#' number of reads. 
 #' @param virus_color color of virus rect.
 #' @param host_color color of host rect.
 #' @param label_virus label of virus.
@@ -18,7 +22,6 @@
 #' @importFrom methods is
 #' @importFrom GenomicRanges GRanges
 #' @importFrom IRanges IRanges
-#' @importFrom ChIPseeker annotatePeak
 #' @importFrom ChIPseeker annotatePeak
 #' @importFrom org.Hs.eg.db org.Hs.eg.db
 #' @importFrom ggrepel geom_text_repel
@@ -156,24 +159,24 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     )
     txdb_38 <- TxDb.Hsapiens.UCSC.hg38.knownGene
     peakAnno1 <- annotatePeak(ranges, level = "gene", annotate_multiple_region = TRUE,
-                             TxDb=txdb_38, annoDb="org.Hs.eg.db", verbose = FALSE) |> 
-                 suppressMessages()      						 
+                             TxDb=txdb_38, annoDb="org.Hs.eg.db", verbose = FALSE) |>
+                 suppressMessages()
     peakAnno1 <- as.data.frame(peakAnno1)
-    peakAnno1$id <- paste(peakAnno1[, 1], peakAnno1[, 2], sep = "_") 
-    
-    
-    
+    peakAnno1$id <- paste(peakAnno1[, 1], peakAnno1[, 2], sep = "_")
+
+
+
     insert_info_host$id <- paste(insert_info_host$chr, insert_info_host$host_loc_old, sep = "_")
     insert_info_host <- insert_info_host[!duplicated(insert_info_host$id), ]
     rownames(insert_info_host) <- insert_info_host$id
-    
-    peakAnno1$log10reads <- insert_info_host[peakAnno1$id, "log10reads"] 
-    peakAnno1$host_loc <- insert_info_host[peakAnno1$id, "host_loc"] 
-    
-    
+
+    peakAnno1$log10reads <- insert_info_host[peakAnno1$id, "log10reads"]
+    peakAnno1$host_loc <- insert_info_host[peakAnno1$id, "host_loc"]
+
+
     peakAnno1 <- peakAnno1[, c("seqnames", "log10reads", "host_loc", "SYMBOL")]
     peakAnno1 <- peakAnno1[order(peakAnno1$log10reads, decreasing = TRUE), ]
-    
+
     genes <- NULL
     if (is(hot_gene, "numeric")) {
         genes <- unique(peakAnno1[, 4])[seq_len(hot_gene)]
@@ -183,18 +186,17 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     }
     if (!is.null(genes) && length(genes) > 0) {
         peakAnno1 <- peakAnno1[peakAnno1$SYMBOL %in% genes, ]
-        peakAnno1 <- peakAnno1[!duplicated(peakAnno1$SYMBOL), ] 
-        # 怎么分层？同个染色体就分层？
-        # 不行，相邻染色体还是会覆盖，那么相邻染色体再弄个分层？
+        peakAnno1 <- peakAnno1[!duplicated(peakAnno1$SYMBOL), ]
         peakAnno1[, 1] <- as.character(peakAnno1[, 1])
         peakAnno1_list <- split(peakAnno1, peakAnno1[, 1])
         peakAnno1_list <- lapply(peakAnno1_list, function(x) {
-            x[, 5] <- -10.2 - 0.8 * seq_len(nrow(x)) 
+            x[, 5] <- -10.2 - 0.8 * seq_len(nrow(x))
             return(x)
         })
         peakAnno1 <- do.call(rbind, peakAnno1_list)
         colnames(peakAnno1)[5] <- "y"
     }
-    p + ggrepel::geom_text_repel(data = peakAnno1, aes(label = SYMBOL, x = host_loc, y = y),
+    p <- p + ggrepel::geom_text_repel(data = peakAnno1, aes(label = SYMBOL, x = host_loc, y = y),
               size = 5.2, color = "black")
+    p
 }

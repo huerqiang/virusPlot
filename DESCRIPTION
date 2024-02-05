@@ -15,17 +15,23 @@ Depends:
 Imports: 
     aplot,
     ChIPseeker,
+    DT,
     GenomicRanges,
     ggplot2,
     ggrepel,
     ggsci,
+    golem,
     grid,
     httr,
     IRanges,
     methods,
     org.Hs.eg.db,
+    plotly,
     rentrez,
     shadowtext,
+    shiny,
+    shinydashboard,
+    tidyr,
     TxDb.Hsapiens.UCSC.hg38.knownGene,
     utils
 RoxygenNote: 7.2.3
@@ -33,6 +39,5 @@ Suggests:
     aplotExtra,
     ggfun,
     knitr,
-    rmarkdown,
-    tidyr
+    rmarkdown
 VignetteBuilder: knitr
