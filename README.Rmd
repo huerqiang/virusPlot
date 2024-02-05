@@ -97,7 +97,12 @@ oncoplot(vcf_matrix, varis_color = col,
     clinical_color = cli_colors, na.value = "#F3F5F7")
 ```
 
+Run shinyapp
+```{r eval=FALSE, message=FALSE, warning=FALSE}
+run_virusPlot()
+```
 
+<img src="man/figures/shinyapp.png" width="100%" />
 
 ```{r}
 sessionInfo()

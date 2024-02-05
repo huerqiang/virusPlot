@@ -6,8 +6,8 @@
 #' @importFrom shiny renderPlot
 #' @importFrom shiny withProgress
 # @importFrom plotly renderPlotly
-#' @importFrom DT dataTableOutput
-#' @importFrom DT renderDataTable
+# @importFrom DT dataTableOutput
+# @importFrom DT renderDataTable
 #' @importFrom plotly plotlyOutput
 #' @noRd
 app_server <- function(input, output, session) {
@@ -48,6 +48,12 @@ app_server <- function(input, output, session) {
             output$strudel_plot <- renderPlot({
                 p_strudel 
             }) 
+
+            output$strudel_plot_ui <- renderUI({
+                ns <- session$ns
+                plotOutput("strudel_plot",width = paste0(input$w1, "px"),
+                           height = paste0(input$h1, "px"))
+            })
         })
 
 
@@ -68,10 +74,20 @@ app_server <- function(input, output, session) {
             output$hot_gene_host_plot <- renderPlot({
                 p_host
             })
+
+            output$hot_gene_host_plot_ui <- renderUI({
+                ns <- session$ns
+                plotOutput("hot_gene_host_plot",width = paste0(input$w2, "px"),
+                           height = paste0(input$h2, "px"))
+            })
             output$hot_gene_virus_plot <- renderPlot({
                 p_virus
             })
-    
+            output$hot_gene_virus_plot_ui <- renderUI({
+                ns <- session$ns
+                plotOutput("hot_gene_virus_plot",width = paste0(input$w3, "px"),
+                           height = paste0(input$h3, "px"))
+            })
             output$hot_gene_host_table <- renderDataTable({
                 t_host
             })
@@ -81,6 +97,35 @@ app_server <- function(input, output, session) {
             })
         })
 
+        output$down1 <- downloadHandler(
+            filename = function(){
+              paste0("strudel_plot_",Sys.Date(),".",input$format1)
+            },
+            content = function(file){
+                ggplot2::ggsave(plot = p_strudel, file = file, width = input$w1/72,
+                                height = input$h1/72, dpi = input$dpi1)
+                
+            }
+        )
+        output$down2 <- downloadHandler(
+            filename = function(){
+              paste0("strudel_plot_",Sys.Date(),".",input$format2)
+            },
+            content = function(file){
+                ggplot2::ggsave(plot = p_host, file = file, width = input$w2/72,
+                                height = input$h2/72, dpi = input$dpi2)
+                
+            }
+        )
+        output$down3 <- downloadHandler(
+            filename = function(){
+              paste0("strudel_plot_",Sys.Date(),".",input$format3)
+            },
+            content = function(file){
+                ggplot2::ggsave(plot = p_virus, file = file, width = input$w3/72,
+                                height = input$h3/72, dpi = input$dpi3)   
+            }
+        )       
     })
 }
 

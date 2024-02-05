@@ -1,35 +1,57 @@
-#' @importFrom shiny tabPanel
-#' @importFrom shiny plotOutput
+# @importFrom shiny tabPanel
+# @importFrom shiny plotOutput
+# @importFrom shiny splitLayout
+# @importFrom shiny tags
+# @importFrom shiny uiOutput
+# @importFrom shiny conditionalPanel
+# @importFrom shiny downloadButton
+# @importFrom shiny selectInput
+# @importFrom shiny numericInput
+# @importFrom shiny h4
+# @importFrom shiny column
+# @importFrom shiny actionButton
+# @importFrom shiny br
+# @importFrom shiny textInput
+#' @import shiny
 report_strudel <- tabPanel("Strudel plot",
-   plotOutput("strudel_plot")
+    uiOutput("strudel_plot_ui"),
+    fluidRow(
+        column(width = 3, selectInput("format1","Format", list("pdf", "jpg", "png", "tiff"), selected = "pdf")),
+        column(width = 3, numericInput("dpi1","Dpi", value = 300,step = 10)),
+        column(width = 3, numericInput("w1","Width", value = 800,step = 10)),
+        column(width = 3, numericInput("h1","Height", value = 450,step = 10))
+    ),
+    fluidRow(    
+        column(width = 6, downloadButton("down1","Download"))
+    )
 )
 
 #' @importFrom shiny tabPanel
 report_hot_gene <- tabPanel("Hot insert genes",
-        # fluidRow(
-        #     plotOutput("hot_gene_host_plot")), 
-        #         style = "font-size: 70%;"),
-        #     shinydashboard::box(title = "hot_gene_host_table",
-        #         width = 4,
-        #         collapsible = T,
-        #         shinycssloaders::withSpinner(DT::dataTableOutput("hot_gene_host_table")), 
-        #         style = "font-size: 70%;")),
-        # fluidRow(
-        #     shinydashboard::box(
-        #         width = 8,
-        #         collapsible = T,
-        #         shinycssloaders::withSpinner(plotOutput("hot_gene_virus_plot")), 
-        #         style = "font-size: 70%;"),
-        #     shinydashboard::box(title = "hot_gene_virus_table",
-        #         width = 4,
-        #         collapsible = T,
-        #         shinycssloaders::withSpinner(DT::dataTableOutput("hot_gene_virus_table")), 
-        #         style = "font-size: 70%;")
-        # )
-        plotOutput("hot_gene_host_plot"),
-        DT::dataTableOutput("hot_gene_host_table"),
-        plotOutput("hot_gene_virus_plot"),
-        DT::dataTableOutput("hot_gene_virus_table")
+    uiOutput("hot_gene_host_plot_ui"),
+    fluidRow(
+        column(width = 3, selectInput("format2","Format", list("pdf", "jpg", "png", "tiff"), selected = "pdf")),
+        column(width = 3, numericInput("dpi2","Dpi", value = 300,step = 10)),
+        column(width = 3, numericInput("w2","Width", value = 800,step = 10)),
+        column(width = 3, numericInput("h2","Height", value = 450,step = 10))
+    ),
+    fluidRow(    
+        column(width = 6, downloadButton("down2","Download"))
+    ),
+    # plotOutput("hot_gene_host_plot"),
+    dataTableOutput("hot_gene_host_table"),
+    uiOutput("hot_gene_virus_plot_ui"),
+    fluidRow(
+        column(width = 3, selectInput("format3","Format", list("pdf", "jpg", "png", "tiff"), selected = "pdf")),
+        column(width = 3, numericInput("dpi3","Dpi", value = 300,step = 10)),
+        column(width = 3, numericInput("w3","Width", value = 800,step = 10)),
+        column(width = 3, numericInput("h3","Height", value = 450,step = 10))
+    ),
+    fluidRow(    
+        column(width = 6, downloadButton("down3","Download"))
+    ),
+    # plotOutput("hot_gene_virus_plot"),
+    dataTableOutput("hot_gene_virus_table")
 )
 
 box1 <- box(width = 9, 
@@ -107,7 +129,6 @@ body <- dashboardBody(
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
-#' @import shiny
 #' @import shinydashboard
 #' @noRd
 app_ui <- function(request) {

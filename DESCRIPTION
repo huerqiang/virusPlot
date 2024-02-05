@@ -15,7 +15,6 @@ Depends:
 Imports: 
     aplot,
     ChIPseeker,
-    DT,
     GenomicRanges,
     ggplot2,
     ggrepel,
