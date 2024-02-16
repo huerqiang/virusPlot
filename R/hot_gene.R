@@ -143,6 +143,7 @@ get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000)) {
 #' @importFrom ggplot2 theme_classic
 #' @importFrom ggplot2 xlab
 #' @importFrom ggplot2 ylab
+#' @importFrom ggbreak scale_y_break
 #'
 #' @return gg object
 #' @export
@@ -155,7 +156,7 @@ get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000)) {
 #'       end = c(559, 858, 2813, 3852, 3619, 4100, 5657, 7155, 7904))
 #' hot_gene <- get_hot_gene(virus_info, insert_info)
 #' insert_plot <- hot_gene_plot(hot_gene)
-hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 5) {
+hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 5, break_y = TRUE) {
     gene <- group <- NULL
     if (is(hot_gene_host, "numeric")) {
         hot_gene_host <- min(hot_gene_host, nrow(hot_gene_result$host))
@@ -214,7 +215,7 @@ hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 5
       theme(text=element_text(family="Songti SC",size=12,face = "bold"),
             axis.text.x = element_text(size=10)) + # 设置X轴文字大小
       # annotate("text", x = rmsk_pvalue2$element, y = rmsk_pvalue2$y2, label = paste("P =", round(rmsk_pvalue2$pvalue, 9))) +
-      annotate("text", x = rmsk_pvalue2$gene, y = rmsk_pvalue2$y, label = paste("P =", format(rmsk_pvalue2$pvalue, scientific = TRUE))) +
+      annotate("text", x = rmsk_pvalue2$gene, y = rmsk_pvalue2$y, label = paste("P =", format(rmsk_pvalue2$pvalue, scientific = TRUE, digits = 3))) +
       theme_classic() +
       # theme_dose() +
       # geom_segment(mapping = aes(x = xstart, y = y, xend = xend, yend = y), data = rmsk_pvalue2) +
@@ -223,10 +224,14 @@ hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 5
     # p + scale_y_break(c(10, 15, 70, 120, 1300, 1400), scales="free") + ylim(0, 5250) +
         # theme(legend.text=element_text(size=15)) +
         # theme(legend.title=element_text(size=15))
-
+    if (break_y) {
+        b1 <- min(long$insert[long$group == "Expected"]) 
+        b2 <- max(long$insert[long$group == "Expected"]) 
+        p <- p + scale_y_break(c(b1, b2), scales="free")
+    }
     p_host <- p + theme(legend.text=element_text(size=15)) +
         theme(legend.title=element_text(size=15))
-
+    
     long <- result_virus[, 1:3] %>% 
     pivot_longer(cols = !gene, 
                  names_to = "group",
@@ -253,7 +258,7 @@ hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 5
       theme(text=element_text(family="Songti SC",size=12,face = "bold"), 
             axis.text.x = element_text(size=10)) + # 设置X轴文字大小
       # annotate("text", x = rmsk_pvalue2$element, y = rmsk_pvalue2$y2, label = paste("P =", round(rmsk_pvalue2$pvalue, 9))) + 
-      annotate("text", x = rmsk_pvalue2$gene, y = rmsk_pvalue2$y, label = paste("P =", format(rmsk_pvalue2$pvalue, scientific = TRUE))) + 
+      annotate("text", x = rmsk_pvalue2$gene, y = rmsk_pvalue2$y, label = paste("P =", format(rmsk_pvalue2$pvalue, scientific = TRUE, digits = 3))) + 
       theme_classic() +  
       # theme_dose() + 
       # geom_segment(mapping = aes(x = xstart, y = y, xend = xend, yend = y), data = rmsk_pvalue2) + 

@@ -16,6 +16,7 @@ Imports:
     aplot,
     ChIPseeker,
     GenomicRanges,
+    ggbreak,
     ggplot2,
     ggrepel,
     ggsci,

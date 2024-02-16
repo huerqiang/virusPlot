@@ -34,6 +34,9 @@ Shanye Yin: Albert Einstein College of Medicine
 devtools::install_github("huerqiang/virusPlot")
 ```
 
+## workflow
+<img src="man/figures/workflow.png" width="100%" />
+
 ## Example
 
 Download virus genome

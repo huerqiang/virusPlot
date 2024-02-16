@@ -4,7 +4,12 @@
 \alias{hot_gene_plot}
 \title{Title}
 \usage{
-hot_gene_plot(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 5)
+hot_gene_plot(
+  hot_gene_result,
+  hot_gene_host = 5,
+  hot_gene_virus = 5,
+  break_y = TRUE
+)
 }
 \arguments{
 \item{hot_gene_result}{result of get_hot_gene()}
