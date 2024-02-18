@@ -40,9 +40,10 @@
 #' p <- strudel_plot(virus_info, insert_info)
 strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     host_color = "#EAFEFF", label_virus = "HPV16", label_host = "Host", hot_gene = 5,
-    size_gene = 6.5, size_label = 6.5, text_repel  = FALSE) {
+    size_gene = 6.5, size_label = 6.5, text_repel  = TRUE) {
     start <- num <- ymin <- ymax <- xmin <- xmax <- fill <- x <- gene <- SYMBOL <- NULL
     label <- hpv_loc <- y <- log10reads <- host_loc <- log10reads2 <- NULL
+    virus_info[, 1] <- make.unique(virus_info[, 1])
     virus_info <- as.data.frame(virus_info[, seq_len(3)])
     colnames(virus_info) <- c("gene", "start", "end")
     virus_info$start <- as.numeric(virus_info$start)
@@ -58,27 +59,36 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     virus_info$start <- as.numeric(virus_info$start)
     virus_info$end <- as.numeric(virus_info$end)
     virus_info <- virus_info[order(virus_info$start), ]
-    virus_info$level <- "level1"
-    level2 <- 1 + which(virus_info$start[-1] -
-        virus_info$end[seq_len(nrow(virus_info) - 1)] < 0)
-    if (length(level2) > 0) {
-        virus_info$level[level2] <- "level2"
-        virus_info_level2 <- virus_info[level2, ]
-        level3 <- 1 + which(virus_info_level2$start[-1] -
-            virus_info_level2$end[seq_len(nrow(virus_info_level2) - 1)] < 0)
-
-        if (length(level3) > 0) {
-            virus_info_level2$level[level3] <- "level3"
+    virus_info$level <- 0
+    get_range <- function(df) {
+        if (nrow(df) == 1) return(c(1))
+        keep <- c(1)
+        for (i in 2:nrow(df)) {
+            if (df[i, "start"] > max(df[keep, "end"])) {
+                keep <- c(keep, i)
+            }
         }
-        virus_info[virus_info_level2$gene, "level"] <- virus_info_level2$level
+        return(keep)
     }
+    virus_info2 <- virus_info
+    virus_info2$rank <- seq_len(nrow(virus_info))
+    k <- 1
+    while(nrow(virus_info2) > 0) {
+        keep <- get_range(virus_info2)
+        virus_info[virus_info2[keep, "rank"], "level"] <- k
+        virus_info2 <- virus_info2[-keep, ]
+        k <- k + 1
+    }
+    virus_info$level <- paste0("level", virus_info$level)
     max_reads <- ceiling(max(insert_info$log10reads))
-    ymin <- max_reads + c(1, 0.6, 0.2)
-    names(ymin) <- c("level1", "level2", "level3")
+    # ymin <- max_reads + c(1, 0.6, 0.2)
+    ymin <- max_reads + seq(1,0.2,length.out = length(unique(virus_info$level)))
+    names(ymin) <- unique(virus_info$level)
 
     rect_df <- data.frame(ymin = ymin[virus_info$level], xmin = virus_info$start, xmax = virus_info$end)
     rect_df$ymax <- rect_df$ymin + 0.38
-    text_df <- data.frame(label = virus_info$gene,
+    gene_label <- gsub("\\..*", "", virus_info$gene)
+    text_df <- data.frame(label = gene_label,
         x = (virus_info$start + virus_info$end) / 2,
         y = (rect_df$ymin + rect_df$ymax) / 2)
 
@@ -201,7 +211,7 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     }
     if (text_repel) {
         p <- p + ggrepel::geom_text_repel(data = peakAnno1, aes(label = SYMBOL, x = host_loc, y = y),
-                  size = 5.2, color = "black")
+                  size = 5.2, color = "black", direction = "y")
     } else {
         p <- p + geom_text(data = peakAnno1, aes(label = SYMBOL, x = host_loc, y = y),
                   size = 5.2, color = "black")
