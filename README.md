@@ -89,19 +89,34 @@ data(insert_info)
 gene_features <- get_virus_annotation(accession_number = "NC_001526.2",
     email = "13766876214@163.com")
 virus_info_NC_001526 <- deal_virus_annotation(gene_features)
-strudel_plot(virus_info = virus_info_NC_001526, insert_info, hot_gene = 5)
-#> >> done...                    2024-02-16 10:54:15
+strudel_plot(virus_info = virus_info_NC_001526, insert_info, 
+             hot_gene = 3)
+#> >> done...                    2024-02-18 12:21:05
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
+hot genes of virus
+
+``` r
+hot_gene <- get_hot_gene(virus_info = virus_info_NC_001526, insert_info)
+#> >> done...                    2024-02-18 12:21:36
+insert_plot <- hot_gene_plot(hot_gene)
+```
+
+``` r
+insert_plot[[2]]
+```
+
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+
 ``` r
 strudel_plot(virus_info = virus_info_NC_001526, insert_info, 
              hot_gene = c( "SAV1", "ZPLD1", "CHMP6", "IRS4"))
-#> >> done...                    2024-02-16 10:54:44
+#> >> done...                    2024-02-18 12:22:07
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
 ``` r
 data(vcf_matrix)
@@ -113,7 +128,7 @@ oncoplot(vcf_matrix, varis_color = col,
     clinical_color = cli_colors, na.value = "#F3F5F7")
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 Run shinyapp
 

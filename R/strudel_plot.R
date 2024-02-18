@@ -17,6 +17,8 @@
 #' @param hot_gene number of insert hot genes.
 #' @param size_gene size of gene labels.
 #' @param size_label size of label_virus and label_host.
+#' @param text_repel If TRUE (the default), use geom_text_repel to make text 
+#' labels repel away from each other and away from the data points.
 #' @import ggplot2
 #' @importFrom utils data
 #' @importFrom methods is
@@ -38,7 +40,7 @@
 #' p <- strudel_plot(virus_info, insert_info)
 strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     host_color = "#EAFEFF", label_virus = "HPV16", label_host = "Host", hot_gene = 5,
-    size_gene = 6.5, size_label = 6.5) {
+    size_gene = 6.5, size_label = 6.5, text_repel  = FALSE) {
     start <- num <- ymin <- ymax <- xmin <- xmax <- fill <- x <- gene <- SYMBOL <- NULL
     label <- hpv_loc <- y <- log10reads <- host_loc <- log10reads2 <- NULL
     virus_info <- as.data.frame(virus_info[, seq_len(3)])
@@ -138,7 +140,7 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
         x = (hostfile$start + hostfile$end)/2,
         y = -max_reads*2.55)
     text_df[c(17, 19, 21), "y"] <- -max_reads*2.65
-    y_df <- data.frame(label = as.character(c(rev(seq_len(max_reads)), 0, seq_len(max_reads), 0)),
+    y_df <- data.frame(label = as.character(c(rev(seq_len(max_reads)), 0, rev(seq_len(max_reads)), 0)),
         x = -max_reads,
         y = c(rev(seq_len(max_reads)), 0, -((1.5*max_reads) : (2.5*max_reads))))
     p <- p + geom_text(data = text_df, aes(label = label, x = x, y = y),
@@ -190,13 +192,20 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
         peakAnno1[, 1] <- as.character(peakAnno1[, 1])
         peakAnno1_list <- split(peakAnno1, peakAnno1[, 1])
         peakAnno1_list <- lapply(peakAnno1_list, function(x) {
-            x[, 5] <- -10.2 - 0.8 * seq_len(nrow(x))
+            # x[, 5] <- -10.2 - 0.8 * seq_len(nrow(x))
+            x[, 5] <- min(y_df$y) + min(y_df$y)/10 * seq_len(nrow(x))
             return(x)
         })
         peakAnno1 <- do.call(rbind, peakAnno1_list)
         colnames(peakAnno1)[5] <- "y"
     }
-    p <- p + ggrepel::geom_text_repel(data = peakAnno1, aes(label = SYMBOL, x = host_loc, y = y),
-              size = 5.2, color = "black")
+    if (text_repel) {
+        p <- p + ggrepel::geom_text_repel(data = peakAnno1, aes(label = SYMBOL, x = host_loc, y = y),
+                  size = 5.2, color = "black")
+    } else {
+        p <- p + geom_text(data = peakAnno1, aes(label = SYMBOL, x = host_loc, y = y),
+                  size = 5.2, color = "black")
+    }
+
     p
 }
