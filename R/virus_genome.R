@@ -72,12 +72,13 @@ deal_virus_annotation <- function(gene_features) {
     bb[, 1] <- gsub(".*=", "", bb[, 1])
     bb[, 2] <- gsub("[]+gene[]+", "", bb[,2])
     bb[, 2] <- gsub(" ", "", bb[,2])
-    anno <- gsub("\\(.*", "\\1", bb[, 2])
-    anno[grep("\\(", bb[, 2], invert = TRUE)] <- ""
-    bb[, 1] <- paste0(bb[, 1], anno)
+    bb[, 2] <- gsub(".*\\((.*)\\).*", "\\1", bb[, 2])
+    anno <- strsplit(bb[, 2], ",")
+    names(anno) <- bb[, 1]
+    anno <- stack(anno)
     se <- strsplit(bb[, 2], "\\.\\.") |> do.call(rbind, args = _)
     start <- gsub("[^0-9]", "", se[, 1]) |> as.numeric()
     end <- gsub("[^0-9]", "", se[, 2]) |> as.numeric()
-    return(data.frame(gene = bb[, 1], start = start, end = end))
+    return(data.frame(gene = anno[, 2], start = start, end = end))
 }
 
