@@ -19,6 +19,7 @@
 #' @importFrom IRanges findOverlaps
 #' @importFrom stats fisher.test
 #' @importFrom stats na.omit
+#' @importFrom stats aggregate
 #' @importFrom TxDb.Hsapiens.UCSC.hg38.knownGene TxDb.Hsapiens.UCSC.hg38.knownGene
 #'
 #' @return list
@@ -108,8 +109,10 @@ get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000)) {
 
     ## gene length
     virus_info$length <- virus_info$end - virus_info$start
-    exon_length <- sum(virus_info$length)
-    gene_num_hpv$length <- virus_info[match(gene_num_hpv[, 1], virus_info$gene), "length"]
+    result <- aggregate(. ~ gene, data = virus_info[, c("gene", "length")], FUN = sum)
+    virus_info$length <- result[match(virus_info$gene, result[, 1]), 2]
+    exon_length <- sum(result[, 2])
+    gene_num_hpv$length <- result[match(gene_num_hpv[, 1], result[, 1]), 2]
     insert_sum_hpv <- sum(gene_num_hpv[, 2])
     gene_num_hpv$expect <- insert_sum_hpv * gene_num_hpv$length / exon_length
     gene_num_hpv <- gene_num_hpv[order(gene_num_hpv[, 2], decreasing = TRUE), ]
@@ -262,7 +265,8 @@ hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 5
       theme_classic() +  
       # theme_dose() + 
       # geom_segment(mapping = aes(x = xstart, y = y, xend = xend, yend = y), data = rmsk_pvalue2) + 
-      xlab("HPV16") + 
+      # xlab("HPV16") + 
+      xlab("") + 
       ylab("Number of breakpoints") 
     p_virus <- p + theme(legend.text=element_text(size=15)) + 
     theme(legend.title=element_text(size=15))

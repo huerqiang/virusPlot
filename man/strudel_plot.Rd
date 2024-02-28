@@ -13,7 +13,8 @@ strudel_plot(
   label_host = "Host",
   hot_gene = 5,
   size_gene = 6.5,
-  size_label = 6.5
+  size_label = 6.5,
+  text_repel = TRUE
 )
 }
 \arguments{
@@ -42,6 +43,9 @@ number of reads.}
 \item{size_gene}{size of gene labels.}
 
 \item{size_label}{size of label_virus and label_host.}
+
+\item{text_repel}{If TRUE (the default), use geom_text_repel to make text 
+labels repel away from each other and away from the data points.}
 }
 \value{
 a gg object
