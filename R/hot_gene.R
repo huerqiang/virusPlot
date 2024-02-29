@@ -137,6 +137,7 @@ get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000)) {
 #' @param hot_gene_result result of get_hot_gene()
 #' @param hot_gene_host hot insert genes of host to plot, can be a number of a vector of genes
 #' @param hot_gene_virus hot insert genes of virus to plot, can be a number of a vector of genes
+#' @param break_y If ture (the default), use ggbreak to set an y axis break.
 #' @importFrom tidyr pivot_longer
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 geom_bar

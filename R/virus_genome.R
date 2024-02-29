@@ -55,6 +55,7 @@ get_virus_genom <- function(accession_number, email, output = NULL) {
 #'
 #' @param gene_features result of get_virus_annotation()
 #' @importFrom utils read.table
+#' @importFrom utils stack
 #'
 #' @return data.frame
 #' @export

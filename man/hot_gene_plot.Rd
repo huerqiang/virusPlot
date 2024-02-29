@@ -17,6 +17,8 @@ hot_gene_plot(
 \item{hot_gene_host}{hot insert genes of host to plot, can be a number of a vector of genes}
 
 \item{hot_gene_virus}{hot insert genes of virus to plot, can be a number of a vector of genes}
+
+\item{break_y}{If ture (the default), use ggbreak to set an y axis break.}
 }
 \value{
 gg object
