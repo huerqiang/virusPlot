@@ -1,7 +1,7 @@
 Package: virusPlot
 Type: Package
 Title: Visualization of virus insertion information
-Version: 0.1.2
+Version: 0.1.4
 Authors@R: c(
       person(given = "Erqiang", family = "Hu", email = "13766876214@163.com", role  = c("aut", "cre"), comment = c(ORCID = "0000-0002-1798-7513")),
       person("Shanye", "Yin", email = "shanye.yin@einsteinmed.edu ", role = c("aut", "ctb"))
@@ -15,6 +15,7 @@ Depends:
 Imports: 
     aplot,
     ChIPseeker,
+    DT,
     GenomicRanges,
     ggbreak,
     ggplot2,
@@ -34,7 +35,7 @@ Imports:
     tidyr,
     TxDb.Hsapiens.UCSC.hg38.knownGene,
     utils
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests: 
     aplotExtra,
     ggfun,

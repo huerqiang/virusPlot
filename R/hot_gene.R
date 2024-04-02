@@ -138,6 +138,8 @@ get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000)) {
 #' @param hot_gene_host hot insert genes of host to plot, can be a number of a vector of genes
 #' @param hot_gene_virus hot insert genes of virus to plot, can be a number of a vector of genes
 #' @param break_y If ture (the default), use ggbreak to set an y axis break.
+#' @param observed_color color of observed value.
+#' @param expected_color color of expected value.
 #' @importFrom tidyr pivot_longer
 #' @importFrom ggplot2 ggplot
 #' @importFrom ggplot2 geom_bar
@@ -160,7 +162,8 @@ get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000)) {
 #'       end = c(559, 858, 2813, 3852, 3619, 4100, 5657, 7155, 7904))
 #' hot_gene <- get_hot_gene(virus_info, insert_info)
 #' insert_plot <- hot_gene_plot(hot_gene)
-hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 5, break_y = TRUE) {
+hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 8, 
+    break_y = TRUE, observed_color = "grey30", expected_color = "grey60") {
     gene <- group <- NULL
     if (is(hot_gene_host, "numeric")) {
         hot_gene_host <- min(hot_gene_host, nrow(hot_gene_result$host))
@@ -215,7 +218,7 @@ hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 5
     long$group <- factor(long$group, levels = c("Observed", "Expected"))
     p <- ggplot(long, aes_string(x = "gene", y = "insert"))+
       geom_bar(mapping = aes(fill = group), stat = 'identity',position = position_dodge(0.9)) +#使柱子并排放置
-      scale_fill_manual(values=c(Observed = "grey30", Expected = "grey60")) +
+      scale_fill_manual(values=c(Observed = observed_color, Expected = expected_color)) +
       theme(text=element_text(family="Songti SC",size=12,face = "bold"),
             axis.text.x = element_text(size=10)) + # 设置X轴文字大小
       # annotate("text", x = rmsk_pvalue2$element, y = rmsk_pvalue2$y2, label = paste("P =", round(rmsk_pvalue2$pvalue, 9))) +
@@ -258,7 +261,7 @@ hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 5
     
     p <- ggplot(long, aes_string(x = "gene", y = "insert"))+
       geom_bar(mapping = aes(fill = group), stat = 'identity',position = position_dodge(0.9)) +#使柱子并排放置
-      scale_fill_manual(values=c(Observed = "grey30", Expected = "grey60")) + 
+      scale_fill_manual(values=c(Observed = observed_color, Expected = expected_color)) + 
       theme(text=element_text(family="Songti SC",size=12,face = "bold"), 
             axis.text.x = element_text(size=10)) + # 设置X轴文字大小
       # annotate("text", x = rmsk_pvalue2$element, y = rmsk_pvalue2$y2, label = paste("P =", round(rmsk_pvalue2$pvalue, 9))) + 

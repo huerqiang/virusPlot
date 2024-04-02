@@ -1,19 +1,7 @@
-# @importFrom shiny tabPanel
-# @importFrom shiny plotOutput
-# @importFrom shiny splitLayout
-# @importFrom shiny tags
-# @importFrom shiny uiOutput
-# @importFrom shiny conditionalPanel
-# @importFrom shiny downloadButton
-# @importFrom shiny selectInput
-# @importFrom shiny numericInput
-# @importFrom shiny h4
-# @importFrom shiny column
-# @importFrom shiny actionButton
-# @importFrom shiny br
-# @importFrom shiny textInput
+
+
 #' @import shiny
-report_strudel <- tabPanel("Strudel plot",
+box1_strudel <- box(width = 9,
     uiOutput("strudel_plot_ui"),
     fluidRow(
         column(width = 3, selectInput("format1","Format", list("pdf", "jpg", "png", "tiff"), selected = "pdf")),
@@ -26,8 +14,8 @@ report_strudel <- tabPanel("Strudel plot",
     )
 )
 
-#' @importFrom shiny tabPanel
-report_hot_gene <- tabPanel("Hot insert genes",
+#' @import shiny
+box1_hotgene <- box(width = 9,
     uiOutput("hot_gene_host_plot_ui"),
     fluidRow(
         column(width = 3, selectInput("format2","Format", list("pdf", "jpg", "png", "tiff"), selected = "pdf")),
@@ -39,7 +27,7 @@ report_hot_gene <- tabPanel("Hot insert genes",
         column(width = 6, downloadButton("down2","Download"))
     ),
     # plotOutput("hot_gene_host_plot"),
-    dataTableOutput("hot_gene_host_table"),
+    DT::dataTableOutput("hot_gene_host_table"),
     uiOutput("hot_gene_virus_plot_ui"),
     fluidRow(
         column(width = 3, selectInput("format3","Format", list("pdf", "jpg", "png", "tiff"), selected = "pdf")),
@@ -54,16 +42,8 @@ report_hot_gene <- tabPanel("Hot insert genes",
     dataTableOutput("hot_gene_virus_table")
 )
 
-box1 <- box(width = 9, 
-            tabBox(
-            width=12,
-            title = "",
-            selected = "Strudel plot",
-            report_strudel,
-            report_hot_gene))
 
-
-box2 <-  box(width = 3,
+box2_strudel <- box(width = 3,
     h4("parameters for strudel plot"),
     # shinyWidgets::colorPickr("virus_color", label="virus rect color", "#EAFEFF",width=6),
     # shinyWidgets::colorPickr("host_color", label="host rect color", "#EAFEFF", width=6),
@@ -77,15 +57,48 @@ box2 <-  box(width = 3,
     ),
     numericInput("hot_gene",label="number of host genes", value = 5, step = 1),
     numericInput("size_gene",label="size of gene labels", value = 6, step = 1),
-    numericInput("size_label",label="size of label_virus and label_host", value = 6, step = 1),
+    numericInput("size_label",label="size of label_virus and label_host", value = 6, step = 1)
+)
+
+box2_hotgene <- box(width = 3,
     h4("parameters for hot gene plot"),
+    fluidRow(
+        column(width = 6, shinyWidgets::colorPickr("observed_color", label="Observed color", "#4d4d4d")),
+        column(width = 6, shinyWidgets::colorPickr("expected_color", label="Expected color", "#999999"))
+    ),
     fluidRow(
         column(width = 6, textInput("tssRegion_left","tssRegion left:", value = "3000")),
         column(width = 6, textInput("tssRegion_right","tssRegion right:", value = "3000"))
     ),
     numericInput("hot_gene_host",label="number of host hot genes", value = 5,step = 1),
-    numericInput("hot_gene_virus",label="number of virus hot genes", value = 5,step = 1)
+    numericInput("hot_gene_virus",label="number of virus hot genes", value = 8,step = 1)
 )
+
+
+#' @import shiny
+report_strudel <- tabPanel("Strudel plot",
+    fluidRow(
+        box1_strudel,
+        box2_strudel
+    )
+)
+
+#' @importFrom shiny tabPanel
+report_hot_gene <- tabPanel("Hot insert genes",
+    fluidRow(
+        box1_hotgene,
+        box2_hotgene
+    )
+)
+
+body <- box(width = 12, 
+            tabBox(
+            width=12,
+            title = "",
+            selected = "Strudel plot",
+            report_strudel,
+            report_hot_gene))
+
 
 #' @importFrom shinydashboard dashboardSidebar
 sidebar <- dashboardSidebar(   
@@ -102,6 +115,10 @@ sidebar <- dashboardSidebar(
     #                             selected = "NCBI"),
     fileInput('insert_info', 'Upload virus inserts result file',
                             accept=c('text/csv', 'text/comma-separated-values, text/plain')),
+        tags$div(
+      style = "height: 5cm; overflow-y: auto; overflow-x: auto; background-color: white;",
+      span(verbatimTextOutput("fileContent"), style="color:black")
+    ),
     helpText("Tip: The virus inserts result file contains at least four columns. 
              The first column is the chromosome,
              the second column is the host insertion site,
@@ -113,16 +130,10 @@ sidebar <- dashboardSidebar(
                  font-family: 'Times New Roman', Times, serif;")
 )
 
-#' @importFrom shiny fluidRow
-tab_normal <- fluidRow(
-    # 改成一个tabpanel
-    box1,
-    box2
-)
 
 #' @importFrom shinydashboard dashboardBody
 body <- dashboardBody(
-    tab_normal 
+    body 
 )
 
 #' The application User-Interface

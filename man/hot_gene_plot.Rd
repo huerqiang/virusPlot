@@ -7,8 +7,10 @@
 hot_gene_plot(
   hot_gene_result,
   hot_gene_host = 5,
-  hot_gene_virus = 5,
-  break_y = TRUE
+  hot_gene_virus = 8,
+  break_y = TRUE,
+  observed_color = "grey30",
+  expected_color = "grey60"
 )
 }
 \arguments{
@@ -19,6 +21,10 @@ hot_gene_plot(
 \item{hot_gene_virus}{hot insert genes of virus to plot, can be a number of a vector of genes}
 
 \item{break_y}{If ture (the default), use ggbreak to set an y axis break.}
+
+\item{observed_color}{color of observed value.}
+
+\item{expected_color}{color of expected value.}
 }
 \value{
 gg object
