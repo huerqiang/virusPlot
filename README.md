@@ -23,7 +23,7 @@ devtools::install_github("huerqiang/virusPlot")
 
 ## workflow
 
-<img src="man/figures/workflow.png" width="100%" />
+<img src="man/figures/overview.png" width="100%" />
 
 ## Example
 
@@ -74,7 +74,8 @@ insert_num <- data.frame(start = seq(1, 7801, 100),
     end = seq(101, 7901, 100),
     num = sample(1:28, 79, replace = TRUE))
 circle_virus(virus_info, insert_num)
-#> Warning: Removed 1 rows containing missing values (`geom_col()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_col()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
@@ -91,7 +92,7 @@ gene_features <- get_virus_annotation(accession_number = "NC_001526.2",
 virus_info_NC_001526 <- deal_virus_annotation(gene_features)
 strudel_plot(virus_info = virus_info_NC_001526, insert_info, 
              hot_gene = 3)
-#> >> done...                    2024-02-18 12:21:05
+#> >> done...                    2024-04-07 4:52:17
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
@@ -100,7 +101,7 @@ hot genes of virus
 
 ``` r
 hot_gene <- get_hot_gene(virus_info = virus_info_NC_001526, insert_info)
-#> >> done...                    2024-02-18 12:21:36
+#> >> done...                    2024-04-07 4:52:49
 insert_plot <- hot_gene_plot(hot_gene)
 ```
 
@@ -113,7 +114,7 @@ insert_plot[[2]]
 ``` r
 strudel_plot(virus_info = virus_info_NC_001526, insert_info, 
              hot_gene = c( "SAV1", "ZPLD1", "CHMP6", "IRS4"))
-#> >> done...                    2024-02-18 12:22:07
+#> >> done...                    2024-04-07 4:53:20
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
@@ -164,7 +165,7 @@ sessionInfo()
 #> other attached packages:
 #> [1] org.Hs.eg.db_3.18.0  AnnotationDbi_1.64.1 IRanges_2.36.0      
 #> [4] S4Vectors_0.40.1     Biobase_2.62.0       BiocGenerics_0.48.1 
-#> [7] virusPlot_0.1.1     
+#> [7] virusPlot_0.1.3     
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] splines_4.3.2                           
@@ -195,7 +196,7 @@ sessionInfo()
 #>  [26] purrr_1.0.2                             
 #>  [27] ggraph_2.1.0                            
 #>  [28] RCurl_1.98-1.12                         
-#>  [29] yulab.utils_0.0.9                       
+#>  [29] yulab.utils_0.1.4                       
 #>  [30] tweenr_2.0.2                            
 #>  [31] rappdirs_0.3.3                          
 #>  [32] GenomeInfoDbData_1.2.11                 
@@ -255,7 +256,7 @@ sessionInfo()
 #>  [86] config_0.3.2                            
 #>  [87] ggsci_3.0.0                             
 #>  [88] utf8_1.2.4                              
-#>  [89] tidyr_1.3.0                             
+#>  [89] tidyr_1.3.1                             
 #>  [90] generics_0.1.3                          
 #>  [91] data.table_1.14.8                       
 #>  [92] rtracklayer_1.62.0                      
@@ -309,28 +310,29 @@ sessionInfo()
 #> [140] forcats_1.0.0                           
 #> [141] maftools_2.18.0                         
 #> [142] plyr_1.8.9                              
-#> [143] stringi_1.7.12                          
-#> [144] viridisLite_0.4.2                       
-#> [145] BiocParallel_1.36.0                     
-#> [146] munsell_0.5.0                           
-#> [147] Biostrings_2.70.1                       
-#> [148] lazyeval_0.2.2                          
-#> [149] GOSemSim_2.28.0                         
-#> [150] Matrix_1.6-4                            
-#> [151] hms_1.1.3                               
-#> [152] patchwork_1.1.3                         
-#> [153] bit64_4.0.5                             
-#> [154] ggplot2_3.4.4                           
-#> [155] KEGGREST_1.42.0                         
-#> [156] shiny_1.8.0                             
-#> [157] highr_0.10                              
-#> [158] SummarizedExperiment_1.32.0             
-#> [159] interactiveDisplayBase_1.40.0           
-#> [160] AnnotationHub_3.10.0                    
-#> [161] igraph_1.5.1                            
-#> [162] memoise_2.0.1                           
-#> [163] ggtree_3.10.0                           
-#> [164] fastmatch_1.1-4                         
-#> [165] bit_4.0.5                               
-#> [166] ape_5.7-1
+#> [143] fs_1.6.3                                
+#> [144] stringi_1.7.12                          
+#> [145] viridisLite_0.4.2                       
+#> [146] BiocParallel_1.36.0                     
+#> [147] munsell_0.5.0                           
+#> [148] Biostrings_2.70.1                       
+#> [149] lazyeval_0.2.2                          
+#> [150] GOSemSim_2.28.0                         
+#> [151] Matrix_1.6-4                            
+#> [152] hms_1.1.3                               
+#> [153] patchwork_1.2.0.9000                    
+#> [154] bit64_4.0.5                             
+#> [155] ggplot2_3.5.0.9000                      
+#> [156] KEGGREST_1.42.0                         
+#> [157] shiny_1.8.0                             
+#> [158] highr_0.10                              
+#> [159] SummarizedExperiment_1.32.0             
+#> [160] interactiveDisplayBase_1.40.0           
+#> [161] AnnotationHub_3.10.0                    
+#> [162] igraph_1.5.1                            
+#> [163] memoise_2.0.1                           
+#> [164] ggtree_3.10.0                           
+#> [165] fastmatch_1.1-4                         
+#> [166] bit_4.0.5                               
+#> [167] ape_5.7-1
 ```

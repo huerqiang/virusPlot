@@ -35,7 +35,7 @@ devtools::install_github("huerqiang/virusPlot")
 ```
 
 ## workflow
-<img src="man/figures/workflow.png" width="100%" />
+<img src="man/figures/overview.png" width="100%" />
 
 ## Example
 
