@@ -27,7 +27,8 @@ box1_hotgene <- box(width = 9,
         column(width = 6, downloadButton("down2","Download"))
     ),
     # plotOutput("hot_gene_host_plot"),
-    DT::dataTableOutput("hot_gene_host_table"),
+    # DT::dataTableOutput("hot_gene_host_table"),
+    DT::DTOutput("hot_gene_host_table"),
     uiOutput("hot_gene_virus_plot_ui"),
     fluidRow(
         column(width = 3, selectInput("format3","Format", list("pdf", "jpg", "png", "tiff"), selected = "pdf")),
@@ -39,7 +40,8 @@ box1_hotgene <- box(width = 9,
         column(width = 6, downloadButton("down3","Download"))
     ),
     # plotOutput("hot_gene_virus_plot"),
-    dataTableOutput("hot_gene_virus_table")
+    # dataTableOutput("hot_gene_virus_table")
+    DT::DTOutput("hot_gene_virus_table")
 )
 
 
@@ -57,7 +59,11 @@ box2_strudel <- box(width = 3,
     ),
     numericInput("hot_gene",label="number of host genes", value = 5, step = 1),
     numericInput("size_gene",label="size of gene labels", value = 6, step = 1),
-    numericInput("size_label",label="size of label_virus and label_host", value = 6, step = 1)
+    numericInput("size_label",label="size of label_virus and label_host", value = 6, step = 1),
+    fluidRow(
+        column(width = 6, numericInput("read_cutoff",label="read cutoff", value = 0, step = 1)),
+        column(width = 6, numericInput("pvalue_cutoff",label="pvalue cutoff", value = 0.05, step = 0.01))
+    ),
 )
 
 box2_hotgene <- box(width = 3,

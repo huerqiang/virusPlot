@@ -14,7 +14,10 @@ strudel_plot(
   hot_gene = 5,
   size_gene = 6.5,
   size_label = 6.5,
-  text_repel = TRUE
+  text_repel = TRUE,
+  read_cutoff = 0,
+  pvalue_cutoff = 0.05,
+  sample_select = NULL
 )
 }
 \arguments{
@@ -46,6 +49,12 @@ number of reads.}
 
 \item{text_repel}{If TRUE (the default), use geom_text_repel to make text 
 labels repel away from each other and away from the data points.}
+
+\item{read_cutoff}{cutoff of read number. The default value is 0.}
+
+\item{pvalue_cutoff}{cutoff of pvalue. The default value is 0.05.}
+
+\item{sample_select}{samples to use. The default value is NULL.}
 }
 \value{
 a gg object

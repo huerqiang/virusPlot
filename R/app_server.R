@@ -5,7 +5,7 @@
 #' @importFrom shiny observeEvent
 #' @importFrom shiny renderPlot
 #' @importFrom shiny withProgress
-# @importFrom plotly renderPlotly
+#' @importFrom plotly renderPlotly
 # @importFrom DT dataTableOutput
 # @importFrom DT renderDataTable
 #' @importFrom plotly plotlyOutput
@@ -56,20 +56,25 @@ app_server <- function(input, output, session) {
             hot_gene  <- as.numeric(input$hot_gene)
             size_gene <- as.numeric(input$size_gene)
             size_label <- as.numeric(input$size_label)
-            
+            read_cutoff <- input$read_cutoff
+            pvalue_cutoff <- input$pvalue_cutoff
             p_strudel <- strudel_plot(virus_info = virus_info, insert_info = insert_info2,
                                   virus_color = virus_color, host_color = host_color,
                                   label_virus = label_virus, label_host = label_host, 
                                   hot_gene = hot_gene, size_gene = size_gene, 
-                                  size_label = size_label) 
-            output$strudel_plot <- renderPlot({
+                                  size_label = size_label, read_cutoff = read_cutoff,
+                                  pvalue_cutoff = pvalue_cutoff) 
+            # output$strudel_plot <- renderPlot({
+            output$strudel_plot <- renderPlotly({
                 p_strudel 
             }) 
 
             output$strudel_plot_ui <- renderUI({
                 ns <- session$ns
-                plotOutput("strudel_plot",width = paste0(input$w1, "px"),
-                           height = paste0(input$h1, "px"))
+                # plotOutput("strudel_plot",width = paste0(input$w1, "px"),
+                #            height = paste0(input$h1, "px"))
+                plotlyOutput("strudel_plot",width = paste0(input$w1, "px"),
+                             height = paste0(input$h1, "px"))
             })
         })
 

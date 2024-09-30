@@ -19,6 +19,9 @@
 #' @param size_label size of label_virus and label_host.
 #' @param text_repel If TRUE (the default), use geom_text_repel to make text 
 #' labels repel away from each other and away from the data points.
+#' @param read_cutoff cutoff of read number. The default value is 0.
+#' @param pvalue_cutoff cutoff of pvalue. The default value is 0.05.
+#' @param sample_select samples to use. The default value is NULL.
 #' @import ggplot2
 #' @importFrom utils data
 #' @importFrom methods is
@@ -40,9 +43,21 @@
 #' p <- strudel_plot(virus_info, insert_info)
 strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     host_color = "#EAFEFF", label_virus = "HPV16", label_host = "Host", hot_gene = 5,
-    size_gene = 6.5, size_label = 6.5, text_repel  = TRUE) {
+    size_gene = 6.5, size_label = 6.5, text_repel  = TRUE, read_cutoff = 0, pvalue_cutoff = 0.05,
+    sample_select = NULL) {
     start <- num <- ymin <- ymax <- xmin <- xmax <- fill <- x <- gene <- SYMBOL <- NULL
     label <- hpv_loc <- y <- log10reads <- host_loc <- log10reads2 <- NULL
+
+    
+    insert_info <- insert_info[insert_info$reads > as.numeric(read_cutoff), ]
+    if ("pvalue" %in% colnames(insert_info)) {
+        insert_info <- insert_info[insert_info$pvalue < as.numeric(read_cutoff), ]
+    }
+    
+    if ("sample" %in% colnames(insert_info) && !is.null(sample_select))  {
+        insert_info <- insert_info[insert_info$sample %in% sample_select, ]
+    }
+
     virus_info[, 1] <- make.unique(virus_info[, 1])
     virus_info <- as.data.frame(virus_info[, seq_len(3)])
     colnames(virus_info) <- c("gene", "start", "end")
