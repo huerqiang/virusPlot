@@ -65,8 +65,9 @@ Strudel plot of virus insert
 \examples{
 data(insert_info)
 virus_info <- data.frame(
-      gene = c("E6", "E7", "E1", "E2", "E4", "E5", "L2", "L1", "LCR"),
-      start = c(83, 562, 865, 2755, 3332, 3849, 4236, 5560, 7200),
-      end = c(559, 858, 2813, 3852, 3619, 4100, 5657, 7155, 7904))
+      gene = c("E6", "E7", "E1", "E2", "E4", "E5", "L2", "L1"),
+      start = c(83, 562, 865, 2755, 3332, 3849, 4236, 5560),
+      end = c(559, 858, 2813, 3852, 3619, 4100, 5657, 7155))
 p <- strudel_plot(virus_info, insert_info)
+p <- strudel_plot(virus_info, insert_info, sample_select = c("sample1", "sample2", "sample3", "sample4", "sample5"))
 }
