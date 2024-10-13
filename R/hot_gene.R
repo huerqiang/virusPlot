@@ -49,7 +49,7 @@ get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000)) {
         ranges = IRanges(start = insert_info$host_loc, end = insert_info$host_loc)
     )
     txdb_38 <- TxDb.Hsapiens.UCSC.hg38.knownGene
-    peakAnno1 <- annotatePeak(ranges, level = "gene", annotate_multiple_region = TRUE,
+    peakAnno1 <- annotatePeak(ranges, level = "gene", # annotate_multiple_region = TRUE,
                              TxDb=txdb_38, annoDb="org.Hs.eg.db", tssRegion = tssRegion,
                              verbose = FALSE) |>
                  suppressMessages()
@@ -162,7 +162,7 @@ get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000)) {
 #'       end = c(559, 858, 2813, 3852, 3619, 4100, 5657, 7155, 7904))
 #' hot_gene <- get_hot_gene(virus_info, insert_info)
 #' insert_plot <- hot_gene_plot(hot_gene)
-hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 8, 
+hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 8,
     break_y = TRUE, observed_color = "grey30", expected_color = "grey60") {
     gene <- group <- NULL
     if (is(hot_gene_host, "numeric")) {
@@ -232,47 +232,47 @@ hot_gene_plot <- function(hot_gene_result, hot_gene_host = 5, hot_gene_virus = 8
         # theme(legend.text=element_text(size=15)) +
         # theme(legend.title=element_text(size=15))
     if (break_y) {
-        b1 <- min(long$insert[long$group == "Expected"]) 
-        b2 <- max(long$insert[long$group == "Expected"]) 
+        b1 <- min(long$insert[long$group == "Expected"])
+        b2 <- max(long$insert[long$group == "Expected"])
         p <- p + scale_y_break(c(b1, b2), scales="free")
     }
     p_host <- p + theme(legend.text=element_text(size=15)) +
         theme(legend.title=element_text(size=15))
-    
-    long <- result_virus[, 1:3] %>% 
-    pivot_longer(cols = !gene, 
+
+    long <- result_virus[, 1:3] %>%
+    pivot_longer(cols = !gene,
                  names_to = "group",
                  values_to = "insert")
     long$group <- gsub("insert", "Observed", long$group)
     long$group <- gsub("expect", "Expected", long$group)
-    
-    
+
+
     rmsk_pvalue2 <- result_virus
     rmsk_pvalue2$y <- 0
     for (i in 1:nrow(rmsk_pvalue2)) {
         rmsk_pvalue2$y[i] <- max(result_virus[i, "insert"], result_virus[i, "expect"]) + 10
     }
     # rmsk_pvalue2$y2 <- rmsk_pvalue2$y + 1.3
-    
-    # rmsk_pvalue2$xstart <- 1:nrow(rmsk_pvalue2) - 0.2 
-    # rmsk_pvalue2$xend <- 1:nrow(rmsk_pvalue2) + 0.2 
-    
+
+    # rmsk_pvalue2$xstart <- 1:nrow(rmsk_pvalue2) - 0.2
+    # rmsk_pvalue2$xend <- 1:nrow(rmsk_pvalue2) + 0.2
+
     long$group <- factor(long$group, levels = c("Observed", "Expected"))
-    
+
     p <- ggplot(long, aes_string(x = "gene", y = "insert"))+
       geom_bar(mapping = aes(fill = group), stat = 'identity',position = position_dodge(0.9)) +#使柱子并排放置
-      scale_fill_manual(values=c(Observed = observed_color, Expected = expected_color)) + 
-      theme(text=element_text(family="Songti SC",size=12,face = "bold"), 
+      scale_fill_manual(values=c(Observed = observed_color, Expected = expected_color)) +
+      theme(text=element_text(family="Songti SC",size=12,face = "bold"),
             axis.text.x = element_text(size=10)) + # 设置X轴文字大小
-      # annotate("text", x = rmsk_pvalue2$element, y = rmsk_pvalue2$y2, label = paste("P =", round(rmsk_pvalue2$pvalue, 9))) + 
-      annotate("text", x = rmsk_pvalue2$gene, y = rmsk_pvalue2$y, label = paste("P =", format(rmsk_pvalue2$pvalue, scientific = TRUE, digits = 3))) + 
-      theme_classic() +  
-      # theme_dose() + 
-      # geom_segment(mapping = aes(x = xstart, y = y, xend = xend, yend = y), data = rmsk_pvalue2) + 
-      # xlab("HPV16") + 
-      xlab("") + 
-      ylab("Number of breakpoints") 
-    p_virus <- p + theme(legend.text=element_text(size=15)) + 
+      # annotate("text", x = rmsk_pvalue2$element, y = rmsk_pvalue2$y2, label = paste("P =", round(rmsk_pvalue2$pvalue, 9))) +
+      annotate("text", x = rmsk_pvalue2$gene, y = rmsk_pvalue2$y, label = paste("P =", format(rmsk_pvalue2$pvalue, scientific = TRUE, digits = 3))) +
+      theme_classic() +
+      # theme_dose() +
+      # geom_segment(mapping = aes(x = xstart, y = y, xend = xend, yend = y), data = rmsk_pvalue2) +
+      # xlab("HPV16") +
+      xlab("") +
+      ylab("Number of breakpoints")
+    p_virus <- p + theme(legend.text=element_text(size=15)) +
     theme(legend.title=element_text(size=15))
     return(list(p_host = p_host, p_virus = p_virus))
 

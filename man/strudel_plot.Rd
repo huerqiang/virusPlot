@@ -47,7 +47,7 @@ number of reads.}
 
 \item{size_label}{size of label_virus and label_host.}
 
-\item{text_repel}{If TRUE (the default), use geom_text_repel to make text 
+\item{text_repel}{If TRUE (the default), use geom_text_repel to make text
 labels repel away from each other and away from the data points.}
 
 \item{read_cutoff}{cutoff of read number. The default value is 0.}

@@ -9,7 +9,7 @@
 #' The first column is the chromosome,
 #' the second column is the host insertion site,
 #' the third column is the virus break site, and the fourth column is the
-#' number of reads. 
+#' number of reads.
 #' @param virus_color color of virus rect.
 #' @param host_color color of host rect.
 #' @param label_virus label of virus.
@@ -17,7 +17,7 @@
 #' @param hot_gene number of insert hot genes.
 #' @param size_gene size of gene labels.
 #' @param size_label size of label_virus and label_host.
-#' @param text_repel If TRUE (the default), use geom_text_repel to make text 
+#' @param text_repel If TRUE (the default), use geom_text_repel to make text
 #' labels repel away from each other and away from the data points.
 #' @param read_cutoff cutoff of read number. The default value is 0.
 #' @param pvalue_cutoff cutoff of pvalue. The default value is 0.05.
@@ -49,12 +49,12 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     start <- num <- ymin <- ymax <- xmin <- xmax <- fill <- x <- gene <- SYMBOL <- NULL
     label <- hpv_loc <- y <- log10reads <- host_loc <- log10reads2 <- NULL
 
-    
+
     insert_info <- insert_info[insert_info$reads > as.numeric(read_cutoff), ]
     if ("pvalue" %in% colnames(insert_info)) {
         insert_info <- insert_info[insert_info$pvalue < as.numeric(read_cutoff), ]
     }
-    
+
     if ("sample" %in% colnames(insert_info) && !is.null(sample_select))  {
         insert_info <- insert_info[insert_info$sample %in% sample_select, ]
     }
@@ -186,7 +186,7 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
         ranges = IRanges(start = insert_info_host$host_loc_old, end = insert_info_host$host_loc_old)
     )
     txdb_38 <- TxDb.Hsapiens.UCSC.hg38.knownGene
-    peakAnno1 <- annotatePeak(ranges, level = "gene", annotate_multiple_region = TRUE,
+    peakAnno1 <- annotatePeak(ranges, level = "gene", # annotate_multiple_region = TRUE,
                              TxDb=txdb_38, annoDb="org.Hs.eg.db", verbose = FALSE) |>
                  suppressMessages()
     peakAnno1 <- as.data.frame(peakAnno1)

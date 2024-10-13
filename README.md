@@ -91,7 +91,6 @@ gene_features <- get_virus_annotation(accession_number = "NC_001526.2",
 virus_info_NC_001526 <- deal_virus_annotation(gene_features)
 strudel_plot(virus_info = virus_info_NC_001526, insert_info, 
              hot_gene = 3)
-#> >> done...                    2024-10-02 14:49:27
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
@@ -99,7 +98,6 @@ strudel_plot(virus_info = virus_info_NC_001526, insert_info,
 ``` r
 strudel_plot(virus_info = virus_info_NC_001526, insert_info, 
              hot_gene = 3, sample_select = c("sample1", "sample2", "sample3", "sample4", "sample5"))
-#> >> done...                    2024-10-02 14:49:41
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" /> hot
@@ -107,7 +105,6 @@ genes of virus
 
 ``` r
 hot_gene <- get_hot_gene(virus_info = virus_info_NC_001526, insert_info)
-#> >> done...                    2024-10-02 14:49:55
 insert_plot <- hot_gene_plot(hot_gene)
 ```
 
@@ -120,7 +117,6 @@ insert_plot[[2]]
 ``` r
 strudel_plot(virus_info = virus_info_NC_001526, insert_info, 
              hot_gene = c( "SAV1", "ZPLD1", "CHMP6", "IRS4"))
-#> >> done...                    2024-10-02 14:50:09
 ```
 
 <img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
@@ -149,7 +145,7 @@ run_virusPlot()
 sessionInfo()
 #> R version 4.4.1 (2024-06-14)
 #> Platform: aarch64-apple-darwin20
-#> Running under: macOS Sonoma 14.6.1
+#> Running under: macOS 15.0.1
 #> 
 #> Matrix products: default
 #> BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib 
@@ -168,13 +164,13 @@ sessionInfo()
 #> other attached packages:
 #> [1] org.Hs.eg.db_3.19.1  AnnotationDbi_1.66.0 IRanges_2.38.1      
 #> [4] S4Vectors_0.42.1     Biobase_2.64.0       BiocGenerics_0.50.0 
-#> [7] virusPlot_0.1.4     
+#> [7] virusPlot_0.1.5     
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] splines_4.4.1                           
 #>   [2] later_1.3.2                             
 #>   [3] BiocIO_1.14.0                           
-#>   [4] bitops_1.0-8                            
+#>   [4] bitops_1.0-9                            
 #>   [5] ggplotify_0.1.2                         
 #>   [6] tibble_3.2.1                            
 #>   [7] R.oo_1.26.0                             
@@ -196,7 +192,7 @@ sessionInfo()
 #>  [23] golem_0.5.1                             
 #>  [24] abind_1.4-8                             
 #>  [25] zlibbioc_1.50.0                         
-#>  [26] GenomicRanges_1.56.1                    
+#>  [26] GenomicRanges_1.56.2                    
 #>  [27] purrr_1.0.2                             
 #>  [28] R.utils_2.12.3                          
 #>  [29] ggraph_2.2.1                            
@@ -209,7 +205,7 @@ sessionInfo()
 #>  [36] ggrepel_0.9.6                           
 #>  [37] tidytree_0.4.6                          
 #>  [38] rentrez_1.2.3                           
-#>  [39] ChIPseeker_1.39.0                       
+#>  [39] ChIPseeker_1.40.0                       
 #>  [40] codetools_0.2-20                        
 #>  [41] DelayedArray_0.30.1                     
 #>  [42] DOSE_3.30.5                             
@@ -231,10 +227,10 @@ sessionInfo()
 #>  [58] TxDb.Hsapiens.UCSC.hg19.knownGene_3.2.2 
 #>  [59] ggstar_1.0.4                            
 #>  [60] Rcpp_1.0.13                             
-#>  [61] glue_1.7.0                              
+#>  [61] glue_1.8.0                              
 #>  [62] gridExtra_2.3                           
 #>  [63] SparseArray_1.4.8                       
-#>  [64] xfun_0.47                               
+#>  [64] xfun_0.48                               
 #>  [65] qvalue_2.36.0                           
 #>  [66] MatrixGenerics_1.16.0                   
 #>  [67] GenomeInfoDb_1.40.1                     
@@ -259,7 +255,7 @@ sessionInfo()
 #>  [86] tidyr_1.3.1                             
 #>  [87] generics_0.1.3                          
 #>  [88] ggsci_3.2.0                             
-#>  [89] data.table_1.16.0                       
+#>  [89] data.table_1.16.2                       
 #>  [90] rtracklayer_1.64.0                      
 #>  [91] graphlayouts_1.2.0                      
 #>  [92] httr_1.4.7                              
@@ -292,10 +288,10 @@ sessionInfo()
 #> [119] pillar_1.9.0                            
 #> [120] grid_4.4.1                              
 #> [121] vctrs_0.6.5                             
-#> [122] gplots_3.1.3.1                          
+#> [122] gplots_3.2.0                            
 #> [123] promises_1.3.0                          
 #> [124] xtable_1.8-4                            
-#> [125] evaluate_1.0.0                          
+#> [125] evaluate_1.0.1                          
 #> [126] GenomicFeatures_1.56.0                  
 #> [127] cli_3.6.3                               
 #> [128] compiler_4.4.1                          
