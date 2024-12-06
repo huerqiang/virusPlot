@@ -94,7 +94,7 @@ circle_virus <- function(virus_info, insert_num, label = "HPV16",
         geom_text(data = y_df, aes(label = label, x = x, y = y),
                   size = 4, color = "black") +
         ylim(-60, NA) +
-        xlim(0, 7904) +
+        xlim(0, max(virus_info[,3])) +
         theme_void() +
         coord_polar(theta='x', start = pi / 2)  +
         theme(legend.position = "none")
