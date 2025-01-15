@@ -15,6 +15,13 @@ Erqiang Hu: Albert Einstein College of Medicine
 
 Shanye Yin: Albert Einstein College of Medicine
 
+## Availability and implementation
+
+The R package version is available at:
+<https://github.com/huerqiang/virusPlot>. The web version of virusPlot
+is available at:
+(<http://www.huerqiang.com:58211/app/virusplot>)\[<http://www.huerqiang.com:58211/app/virusplot>\].
+
 ## :hammer: Installation
 
 ``` r
@@ -99,6 +106,18 @@ Here we provide the insert_info object as an example:
 
 ``` r
 data(insert_info)
+head(insert_info)
+#>    chr  host_loc hpv_loc reads   sample
+#> 1 chr8 127886048    4667  1310  sample8
+#> 2 chr8 127874880    5296   563  sample8
+#> 3 chr8 127727167    2354   415 sample19
+#> 4 chr8 127886058    5296   292  sample2
+#> 5 chr8 127884965    3224   122 sample19
+#> 6 chr8 127882447    2102    88  sample3
+```
+
+``` r
+
 # virus_info <- data.frame(
 #       gene = c("E6", "E7", "E1", "E2", "E4", "E5", "L2", "L1", "LCR"),
 #       start = c(83, 562, 865, 2755, 3332, 3849, 4236, 5560, 7200),
@@ -111,14 +130,14 @@ strudel_plot(virus_info = virus_info_NC_001526, insert_info,
              hot_gene = 3)
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 ``` r
 strudel_plot(virus_info = virus_info_NC_001526, insert_info, 
              hot_gene = 3, sample_select = c("sample1", "sample2", "sample3", "sample4", "sample5"))
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" /> hot
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" /> hot
 genes of virus
 
 ``` r
@@ -130,14 +149,14 @@ insert_plot <- hot_gene_plot(hot_gene)
 insert_plot[[2]]
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 ``` r
 strudel_plot(virus_info = virus_info_NC_001526, insert_info, 
              hot_gene = c( "SAV1", "ZPLD1", "CHMP6", "IRS4"))
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
 
 ``` r
 data(vcf_matrix)
@@ -149,7 +168,7 @@ oncoplot(vcf_matrix, varis_color = col,
     clinical_color = cli_colors, na.value = "#F3F5F7")
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 Run shinyapp
 

@@ -26,6 +26,8 @@ Erqiang Hu: Albert Einstein College of Medicine
 Shanye Yin: Albert Einstein College of Medicine
 
 
+## Availability and implementation
+The R package version is available at: https://github.com/huerqiang/virusPlot. The web version of virusPlot is available at: (http://www.huerqiang.com:58211/app/virusplot)[http://www.huerqiang.com:58211/app/virusplot].
 
 
 ##  :hammer: Installation
@@ -76,8 +78,13 @@ Users need to prepare an input dataframe containing specific columns that descri
   4. Read Count: The number of reads supporting the integration event.  
   5. Sample ID (optional): The sample identifier, allowing for visualization of integration events across multiple samples.  
 Here we provide the insert_info object as an example:  
-```{r fig.width=10, fig.height=7}
+```{r}
 data(insert_info)
+head(insert_info)
+```
+
+```{r fig.width=10, fig.height=7}
+
 # virus_info <- data.frame(
 #       gene = c("E6", "E7", "E1", "E2", "E4", "E5", "L2", "L1", "LCR"),
 #       start = c(83, 562, 865, 2755, 3332, 3849, 4236, 5560, 7200),
