@@ -19,8 +19,7 @@ Shanye Yin: Albert Einstein College of Medicine
 
 The R package version is available at:
 <https://github.com/huerqiang/virusPlot>. The web version of virusPlot
-is available at:
-(<http://www.huerqiang.com:58211/app/virusplot>)\[<http://www.huerqiang.com:58211/app/virusplot>\].
+is available at: <http://www.huerqiang.com:58211/app/virusplot>.
 
 ## :hammer: Installation
 
