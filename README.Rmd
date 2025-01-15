@@ -68,6 +68,14 @@ insert_num <- data.frame(start = seq(1, 7801, 100),
 circle_virus(virus_info, insert_num)
 ```
 
+
+Users need to prepare an input dataframe containing specific columns that describe viral integration events. These columns include:  
+  1. Chromosome: The chromosome number where the viral integration breakpoint is located in the host genome.  
+  2. Host Position: The position of the breakpoint on the host genome.  
+  3. Viral Position: The corresponding position on the viral genome.  
+  4. Read Count: The number of reads supporting the integration event.  
+  5. Sample ID (optional): The sample identifier, allowing for visualization of integration events across multiple samples.  
+Here we provide the insert_info object as an example:  
 ```{r fig.width=10, fig.height=7}
 data(insert_info)
 # virus_info <- data.frame(

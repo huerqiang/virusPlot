@@ -4,6 +4,7 @@
 # virusPlot
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 Visualization of virus insertion information
@@ -73,11 +74,28 @@ insert_num <- data.frame(start = seq(1, 7801, 100),
     end = seq(101, 7901, 100),
     num = sample(1:28, 79, replace = TRUE))
 circle_virus(virus_info, insert_num)
-#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> Warning: Removed 8 rows containing missing values or values outside the scale range
 #> (`geom_col()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_rect()`).
+#> Removed 1 row containing missing values or values outside the scale range
+#> (`geom_rect()`).
+#> Warning: Removed 1 row containing missing values or values outside the scale range
+#> (`geom_text()`).
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+Users need to prepare an input dataframe containing specific columns
+that describe viral integration events. These columns include:  
+1. Chromosome: The chromosome number where the viral integration
+breakpoint is located in the host genome.  
+2. Host Position: The position of the breakpoint on the host genome.  
+3. Viral Position: The corresponding position on the viral genome.  
+4. Read Count: The number of reads supporting the integration event.  
+5. Sample ID (optional): The sample identifier, allowing for
+visualization of integration events across multiple samples.  
+Here we provide the insert_info object as an example:
 
 ``` r
 data(insert_info)
@@ -145,7 +163,7 @@ run_virusPlot()
 sessionInfo()
 #> R version 4.4.1 (2024-06-14)
 #> Platform: aarch64-apple-darwin20
-#> Running under: macOS 15.0.1
+#> Running under: macOS 15.2
 #> 
 #> Matrix products: default
 #> BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib 
@@ -168,21 +186,21 @@ sessionInfo()
 #> 
 #> loaded via a namespace (and not attached):
 #>   [1] splines_4.4.1                           
-#>   [2] later_1.3.2                             
+#>   [2] later_1.4.1                             
 #>   [3] BiocIO_1.14.0                           
 #>   [4] bitops_1.0-9                            
 #>   [5] ggplotify_0.1.2                         
 #>   [6] tibble_3.2.1                            
-#>   [7] R.oo_1.26.0                             
+#>   [7] R.oo_1.27.0                             
 #>   [8] polyclip_1.10-7                         
 #>   [9] XML_3.99-0.17                           
 #>  [10] lifecycle_1.0.4                         
-#>  [11] httr2_1.0.5                             
+#>  [11] httr2_1.0.6                             
 #>  [12] lattice_0.22-6                          
 #>  [13] MASS_7.3-61                             
 #>  [14] magrittr_2.0.3                          
 #>  [15] plotly_4.10.4                           
-#>  [16] rmarkdown_2.28                          
+#>  [16] rmarkdown_2.29                          
 #>  [17] yaml_2.3.10                             
 #>  [18] plotrix_3.8-4                           
 #>  [19] httpuv_1.6.15                           
@@ -197,7 +215,7 @@ sessionInfo()
 #>  [28] R.utils_2.12.3                          
 #>  [29] ggraph_2.2.1                            
 #>  [30] RCurl_1.98-1.16                         
-#>  [31] yulab.utils_0.1.7                       
+#>  [31] yulab.utils_0.1.9.001                   
 #>  [32] tweenr_2.0.3                            
 #>  [33] rappdirs_0.3.3                          
 #>  [34] GenomeInfoDbData_1.2.12                 
@@ -226,17 +244,17 @@ sessionInfo()
 #>  [57] treeio_1.28.0                           
 #>  [58] TxDb.Hsapiens.UCSC.hg19.knownGene_3.2.2 
 #>  [59] ggstar_1.0.4                            
-#>  [60] Rcpp_1.0.13                             
+#>  [60] Rcpp_1.0.13-1                           
 #>  [61] glue_1.8.0                              
 #>  [62] gridExtra_2.3                           
 #>  [63] SparseArray_1.4.8                       
-#>  [64] xfun_0.48                               
+#>  [64] xfun_0.49                               
 #>  [65] qvalue_2.36.0                           
 #>  [66] MatrixGenerics_1.16.0                   
 #>  [67] GenomeInfoDb_1.40.1                     
 #>  [68] dplyr_1.1.4                             
 #>  [69] shinydashboard_0.7.2                    
-#>  [70] withr_3.0.1                             
+#>  [70] withr_3.0.2                             
 #>  [71] fastmap_1.2.0                           
 #>  [72] boot_1.3-31                             
 #>  [73] fansi_1.0.6                             
@@ -255,7 +273,7 @@ sessionInfo()
 #>  [86] tidyr_1.3.1                             
 #>  [87] generics_0.1.3                          
 #>  [88] ggsci_3.2.0                             
-#>  [89] data.table_1.16.2                       
+#>  [89] data.table_1.16.4                       
 #>  [90] rtracklayer_1.64.0                      
 #>  [91] graphlayouts_1.2.0                      
 #>  [92] httr_1.4.7                              
@@ -263,7 +281,7 @@ sessionInfo()
 #>  [94] S4Arrays_1.4.1                          
 #>  [95] scatterpie_0.2.4                        
 #>  [96] pkgconfig_2.0.3                         
-#>  [97] gtable_0.3.5                            
+#>  [97] gtable_0.3.6                            
 #>  [98] blob_1.2.4                              
 #>  [99] XVector_0.44.0                          
 #> [100] shadowtext_0.1.4                        
@@ -273,13 +291,13 @@ sessionInfo()
 #> [104] TxDb.Hsapiens.UCSC.hg38.knownGene_3.18.0
 #> [105] png_0.1-8                               
 #> [106] attempt_0.3.1                           
-#> [107] ggfun_0.1.6                             
-#> [108] knitr_1.48                              
-#> [109] rstudioapi_0.16.0                       
+#> [107] ggfun_0.1.8                             
+#> [108] knitr_1.49                              
+#> [109] rstudioapi_0.17.1                       
 #> [110] reshape2_1.4.4                          
 #> [111] rjson_0.2.23                            
 #> [112] nlme_3.1-166                            
-#> [113] curl_5.2.3                              
+#> [113] curl_6.0.1                              
 #> [114] cachem_1.1.0                            
 #> [115] stringr_1.5.1                           
 #> [116] KernSmooth_2.23-24                      
@@ -289,7 +307,7 @@ sessionInfo()
 #> [120] grid_4.4.1                              
 #> [121] vctrs_0.6.5                             
 #> [122] gplots_3.2.0                            
-#> [123] promises_1.3.0                          
+#> [123] promises_1.3.2                          
 #> [124] xtable_1.8-4                            
 #> [125] evaluate_1.0.1                          
 #> [126] GenomicFeatures_1.56.0                  
@@ -303,7 +321,7 @@ sessionInfo()
 #> [134] forcats_1.0.0                           
 #> [135] maftools_2.20.0                         
 #> [136] plyr_1.8.9                              
-#> [137] fs_1.6.4                                
+#> [137] fs_1.6.5                                
 #> [138] stringi_1.8.4                           
 #> [139] viridisLite_0.4.2                       
 #> [140] BiocParallel_1.38.0                     
@@ -311,18 +329,17 @@ sessionInfo()
 #> [142] Biostrings_2.72.1                       
 #> [143] lazyeval_0.2.2                          
 #> [144] GOSemSim_2.30.2                         
-#> [145] Matrix_1.7-0                            
+#> [145] Matrix_1.7-1                            
 #> [146] patchwork_1.3.0                         
 #> [147] bit64_4.5.2                             
 #> [148] ggplot2_3.5.1                           
 #> [149] KEGGREST_1.44.1                         
 #> [150] shiny_1.9.1                             
 #> [151] SummarizedExperiment_1.34.0             
-#> [152] highr_0.11                              
-#> [153] igraph_2.0.3                            
-#> [154] memoise_2.0.1                           
-#> [155] ggtree_3.12.0                           
-#> [156] fastmatch_1.1-4                         
-#> [157] bit_4.5.0                               
-#> [158] ape_5.8
+#> [152] igraph_2.1.1                            
+#> [153] memoise_2.0.1                           
+#> [154] ggtree_3.12.0                           
+#> [155] fastmatch_1.1-4                         
+#> [156] bit_4.5.0                               
+#> [157] ape_5.8
 ```
