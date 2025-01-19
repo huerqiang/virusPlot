@@ -22,6 +22,7 @@
 #' @param read_cutoff cutoff of read number. The default value is 0.
 #' @param pvalue_cutoff cutoff of pvalue. The default value is 0.05.
 #' @param sample_select samples to use. The default value is NULL.
+#' @param TxDb TxDb or EnsDb annotation object
 #' @import ggplot2
 #' @importFrom utils data
 #' @importFrom methods is
@@ -45,7 +46,7 @@
 strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     host_color = "#EAFEFF", label_virus = "HPV16", label_host = "Host", hot_gene = 5,
     size_gene = 6.5, size_label = 6.5, text_repel  = TRUE, read_cutoff = 0, pvalue_cutoff = 0.05,
-    sample_select = NULL) {
+    sample_select = NULL, TxDb = NULL) {
     start <- num <- ymin <- ymax <- xmin <- xmax <- fill <- x <- gene <- SYMBOL <- NULL
     label <- hpv_loc <- y <- log10reads <- host_loc <- log10reads2 <- NULL
 
@@ -185,9 +186,12 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
         seqnames = insert_info_host$chr,
         ranges = IRanges(start = insert_info_host$host_loc_old, end = insert_info_host$host_loc_old)
     )
-    txdb_38 <- TxDb.Hsapiens.UCSC.hg38.knownGene
+    if (is.null(TxDb)) {
+        TxDb <- TxDb.Hsapiens.UCSC.hg38.knownGene
+    }
+    
     peakAnno1 <- annotatePeak(ranges, level = "gene", # annotate_multiple_region = TRUE,
-                             TxDb=txdb_38, annoDb="org.Hs.eg.db", verbose = FALSE) |>
+                             TxDb=TxDb, annoDb="org.Hs.eg.db", verbose = FALSE) |>
                  suppressMessages()
     peakAnno1 <- as.data.frame(peakAnno1)
     peakAnno1$id <- paste(peakAnno1[, 1], peakAnno1[, 2], sep = "_")

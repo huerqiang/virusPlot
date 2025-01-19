@@ -11,6 +11,7 @@
 #' the third column is the virus break site, and the fourth column is the
 #' number of reads.
 #' @param tssRegion Region Range of TSS
+#' @param TxDb TxDb or EnsDb annotation object
 #' @importFrom GenomicRanges GRanges
 #' @importFrom IRanges IRanges
 #' @importFrom ChIPseeker annotatePeak
@@ -32,7 +33,7 @@
 #'       start = c(83, 562, 865, 2755, 3332, 3849, 4236, 5560, 7200),
 #'       end = c(559, 858, 2813, 3852, 3619, 4100, 5657, 7155, 7904))
 #' hot_gene <- get_hot_gene(virus_info, insert_info)
-get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000)) {
+get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000), TxDb = NULL) {
     if (ncol(insert_info) == 4) {
         insert_info$sample <- "sample1"
     }
@@ -48,9 +49,12 @@ get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000)) {
         seqnames = insert_info$chr,
         ranges = IRanges(start = insert_info$host_loc, end = insert_info$host_loc)
     )
-    txdb_38 <- TxDb.Hsapiens.UCSC.hg38.knownGene
+    if (is.null(TxDb)) {
+        TxDb <- TxDb.Hsapiens.UCSC.hg38.knownGene
+    }
+    
     peakAnno1 <- annotatePeak(ranges, level = "gene", # annotate_multiple_region = TRUE,
-                             TxDb=txdb_38, annoDb="org.Hs.eg.db", tssRegion = tssRegion,
+                             TxDb=TxDb, annoDb="org.Hs.eg.db", tssRegion = tssRegion,
                              verbose = FALSE) |>
                  suppressMessages()
     peakAnno1 <- as.data.frame(peakAnno1)
