@@ -13,11 +13,10 @@ LazyData: false
 Depends: 
     R (>= 2.10)
 Imports: 
-    aplot,
+    callr,
     ChIPseeker,
     DT,
     GenomicRanges,
-    ggbreak,
     ggplot2,
     ggrepel,
     ggsci,

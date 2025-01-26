@@ -28,10 +28,11 @@
 #' @importFrom methods is
 #' @importFrom GenomicRanges GRanges
 #' @importFrom IRanges IRanges
-#' @importFrom ChIPseeker annotatePeak
+# @importFrom ChIPseeker annotatePeak
 #' @importFrom org.Hs.eg.db org.Hs.eg.db
 #' @importFrom ggrepel geom_text_repel
 #' @importFrom TxDb.Hsapiens.UCSC.hg38.knownGene TxDb.Hsapiens.UCSC.hg38.knownGene
+#' @importFrom callr r
 #' @return a gg object
 #' @export
 #'
@@ -193,13 +194,31 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
     # peakAnno1 <- annotatePeak(ranges, level = "gene", # annotate_multiple_region = TRUE,
     #                          TxDb=TxDb, annoDb="org.Hs.eg.db", verbose = FALSE) |>
     #              suppressMessages()
+    peakAnno1 <- annotatePeak_safe(
+      peak = ranges,
+      TxDb = TxDb,
+      tssRegion=c(-3000, 3000),
+      level = "gene",
+      assignGenomicAnnotation = TRUE,
+      genomicAnnotationPriority = c("Promoter", "5UTR", "3UTR", "Exon", "Intron", "Downstream", "Intergenic"),
+      annoDb = "org.Hs.eg.db",
+      addFlankGeneInfo = FALSE,
+      flankDistance = 5000,
+      sameStrand = FALSE,
+      ignoreOverlap = FALSE,
+      ignoreUpstream = FALSE,
+      ignoreDownstream = FALSE,
+      overlap = "TSS",
+      verbose = FALSE,
+      columns = c("ENTREZID", "ENSEMBL", "SYMBOL", "GENENAME")
+    )
 
-    peakAnno1 <- dynamic_call(
-      pkg = "ChIPseeker", fun = "annotatePeak",
-      peak = ranges, level = "gene",
-      TxDb = TxDb, annoDb = "org.Hs.eg.db",
-      verbose = FALSE
-    )  |> suppressMessages()             
+    # peakAnno1 <- dynamic_call(
+    #   pkg = "ChIPseeker", fun = "annotatePeak",
+    #   peak = ranges, level = "gene",
+    #   TxDb = TxDb, annoDb = "org.Hs.eg.db",
+    #   verbose = FALSE
+    # )     
     peakAnno1 <- as.data.frame(peakAnno1)
     peakAnno1$id <- paste(peakAnno1[, 1], peakAnno1[, 2], sep = "_")
 

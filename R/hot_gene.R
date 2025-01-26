@@ -9,6 +9,70 @@ dynamic_call <- function(pkg, fun, ..., suppress = TRUE) {
 }
 
 
+
+
+annotatePeak_safe <- function(peak, tssRegion, TxDb, level = "transcript", 
+                              assignGenomicAnnotation = TRUE, 
+                              genomicAnnotationPriority = c("Promoter", "5UTR", "3UTR", "Exon", 
+                                                             "Intron", "Downstream", "Intergenic"),
+                              annoDb = NULL, addFlankGeneInfo = FALSE, 
+                              flankDistance = 5000, sameStrand = FALSE, 
+                              ignoreOverlap = FALSE, ignoreUpstream = FALSE, 
+                              ignoreDownstream = FALSE, overlap = "TSS", 
+                              verbose = TRUE, 
+                              columns = c("ENTREZID", "ENSEMBL", "SYMBOL", "GENENAME")) {
+  
+  # 动态加载 ChIPseeker::annotatePeak
+  annotatePeak <- getFromNamespace("annotatePeak", "ChIPseeker")
+  
+  # 获取原始的 .hi 函数
+  original_hi <- getFromNamespace(".hi", "yulab.utils")
+  
+  # 解锁 .hi 函数绑定
+  unlockBinding(".hi", asNamespace("yulab.utils"))
+  
+  # 定义一个假的 .hi 函数，让它始终返回 FALSE
+  fake_hi <- function(package = NULL, n = 2L) {
+    FALSE
+  }
+  
+  # 替换 .hi 函数
+  assign(".hi", fake_hi, envir = asNamespace("yulab.utils"))
+  
+  # 使用 tryCatch 保证在出错时恢复原始 .hi 函数
+  result <- tryCatch({
+    annotatePeak(
+      peak = peak,
+      tssRegion = tssRegion,
+      TxDb = TxDb,
+      level = level,
+      assignGenomicAnnotation = assignGenomicAnnotation,
+      genomicAnnotationPriority = genomicAnnotationPriority,
+      annoDb = annoDb,
+      addFlankGeneInfo = addFlankGeneInfo,
+      flankDistance = flankDistance,
+      sameStrand = sameStrand,
+      ignoreOverlap = ignoreOverlap,
+      ignoreUpstream = ignoreUpstream,
+      ignoreDownstream = ignoreDownstream,
+      overlap = overlap,
+      verbose = verbose,
+      columns = columns
+    )
+  }, finally = {
+    # 恢复原始 .hi 函数
+    assign(".hi", original_hi, envir = asNamespace("yulab.utils"))
+    lockBinding(".hi", asNamespace("yulab.utils")) # 重新锁定绑定
+  })
+  
+  return(result)
+}
+
+
+
+
+
+
 #' Get hot insert genes by Chi-square test
 #'
 #' @param virus_info The virus information data frame contains at least three
@@ -25,7 +89,7 @@ dynamic_call <- function(pkg, fun, ..., suppress = TRUE) {
 #' @param TxDb TxDb or EnsDb annotation object
 #' @importFrom GenomicRanges GRanges
 #' @importFrom IRanges IRanges
-# @importFrom ChIPseeker annotatePeak
+#' @importFrom ChIPseeker annotatePeak
 #' @importFrom org.Hs.eg.db org.Hs.eg.db
 #' @importFrom stats chisq.test
 #' @importFrom IRanges findOverlaps
@@ -76,12 +140,32 @@ get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000), Tx
 #       })(ranges, level = "gene", TxDb = TxDb, annoDb = "org.Hs.eg.db", 
 #    tssRegion = tssRegion, verbose = FALSE) |> suppressMessages()
 
-    peakAnno1 <- dynamic_call(
-      pkg = "ChIPseeker", fun = "annotatePeak",
-      peak = ranges, level = "gene",
-      TxDb = TxDb, annoDb = "org.Hs.eg.db",
-      tssRegion = tssRegion, verbose = FALSE
-    )  |> suppressMessages()
+    # peakAnno1 <- dynamic_call(
+    #   pkg = "ChIPseeker", fun = "annotatePeak",
+    #   peak = ranges, level = "gene",
+    #   TxDb = TxDb, annoDb = "org.Hs.eg.db",
+    #   tssRegion = tssRegion, verbose = FALSE
+    # )  
+
+    peakAnno1 <- annotatePeak_safe(
+      peak = ranges,
+      tssRegion = c(-3000, 3000),
+      TxDb = TxDb,
+      level = "gene",
+      assignGenomicAnnotation = TRUE,
+      genomicAnnotationPriority = c("Promoter", "5UTR", "3UTR", "Exon", "Intron", "Downstream", "Intergenic"),
+      annoDb = "org.Hs.eg.db",
+      addFlankGeneInfo = FALSE,
+      flankDistance = 5000,
+      sameStrand = FALSE,
+      ignoreOverlap = FALSE,
+      ignoreUpstream = FALSE,
+      ignoreDownstream = FALSE,
+      overlap = "TSS",
+      verbose = FALSE,
+      columns = c("ENTREZID", "ENSEMBL", "SYMBOL", "GENENAME")
+    )
+
 
     peakAnno1 <- as.data.frame(peakAnno1)
     peakAnno1$id <- paste(peakAnno1[, 1], peakAnno1[, 2], sep = "_")
