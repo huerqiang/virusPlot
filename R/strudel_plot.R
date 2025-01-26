@@ -190,9 +190,16 @@ strudel_plot <- function(virus_info, insert_info, virus_color = "#EAFEFF",
         TxDb <- TxDb.Hsapiens.UCSC.hg38.knownGene
     }
     
-    peakAnno1 <- annotatePeak(ranges, level = "gene", # annotate_multiple_region = TRUE,
-                             TxDb=TxDb, annoDb="org.Hs.eg.db", verbose = FALSE) |>
-                 suppressMessages()
+    # peakAnno1 <- annotatePeak(ranges, level = "gene", # annotate_multiple_region = TRUE,
+    #                          TxDb=TxDb, annoDb="org.Hs.eg.db", verbose = FALSE) |>
+    #              suppressMessages()
+
+    peakAnno1 <- dynamic_call(
+      pkg = "ChIPseeker", fun = "annotatePeak",
+      peak = ranges, level = "gene",
+      TxDb = TxDb, annoDb = "org.Hs.eg.db",
+      verbose = FALSE
+    )  |> suppressMessages()             
     peakAnno1 <- as.data.frame(peakAnno1)
     peakAnno1$id <- paste(peakAnno1[, 1], peakAnno1[, 2], sep = "_")
 

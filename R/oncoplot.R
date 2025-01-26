@@ -271,6 +271,32 @@ oncoplot_clinical <- function(clinical_data, mapping, clinical_color = NULL) {
 }
 
 
+insert_top <- function(.data, plot, height = 1) {
+  dynamic_call("aplot", "insert_tb", 
+               .data = .data, plot = plot, 
+               height = height, side = "top")
+}
+
+
+insert_bottom <- function(.data, plot, height = 1) {
+  dynamic_call("aplot", "insert_tb", 
+               .data = .data, plot = plot, 
+               height = height, side = "bottom")
+}
+
+
+insert_right <- function(.data, plot, width = 1) {
+  dynamic_call("aplot", "insert_lr", 
+               .data = .data, plot = plot, 
+               width = width, side = "right")
+}
+
+
+insert_left <- function(.data, plot, width = 1) {
+  dynamic_call("aplot", "insert_lr", 
+               .data = .data, plot = plot, 
+               width = width, side = "left")
+}
 
 
 
@@ -283,7 +309,7 @@ oncoplot_clinical <- function(clinical_data, mapping, clinical_color = NULL) {
 #' the first column is sample ID.
 #' @param clinical_color namesd vector, color of clinical varis.
 #' @param na.value color of na value.
-#' @import aplot
+# @import aplot
 #'
 #' @return an aplot object
 #' @export
