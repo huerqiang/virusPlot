@@ -17,7 +17,8 @@ strudel_plot(
   text_repel = TRUE,
   read_cutoff = 0,
   pvalue_cutoff = 0.05,
-  sample_select = NULL
+  sample_select = NULL,
+  TxDb = NULL
 )
 }
 \arguments{
@@ -55,6 +56,8 @@ labels repel away from each other and away from the data points.}
 \item{pvalue_cutoff}{cutoff of pvalue. The default value is 0.05.}
 
 \item{sample_select}{samples to use. The default value is NULL.}
+
+\item{TxDb}{TxDb or EnsDb annotation object}
 }
 \value{
 a gg object

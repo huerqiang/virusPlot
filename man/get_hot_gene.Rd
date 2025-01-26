@@ -4,7 +4,7 @@
 \alias{get_hot_gene}
 \title{Get hot insert genes by Chi-square test}
 \usage{
-get_hot_gene(virus_info, insert_info, tssRegion = c(-3000, 3000))
+get_hot_gene(virus_info, insert_info, tssRegion = c(-3000, 3000), TxDb = NULL)
 }
 \arguments{
 \item{virus_info}{The virus information data frame contains at least three
@@ -20,6 +20,8 @@ the third column is the virus break site, and the fourth column is the
 number of reads.}
 
 \item{tssRegion}{Region Range of TSS}
+
+\item{TxDb}{TxDb or EnsDb annotation object}
 }
 \value{
 list
