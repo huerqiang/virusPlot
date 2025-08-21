@@ -246,14 +246,14 @@ get_hot_gene <- function(virus_info, insert_info, tssRegion = c(-3000, 3000), Tx
     return(list(host = result_host, virus = result_hpv))
 }
 
-scale_y_break <- function(breaks, scales = "fixed", ticklabels = NULL, expand = TRUE, space = .1) {
-  scale_break <- getFromNamespace("scale_break", "ggbreak")
+# scale_y_break <- function(breaks, scales = "fixed", ticklabels = NULL, expand = TRUE, space = .1) {
+#   scale_break <- getFromNamespace("scale_break", "ggbreak")
   
-  # 调整调用堆栈，通过匿名函数避开恶意检测
-  (function(axis, breaks, scales, ticklabels, expand, space) {
-    scale_break(axis, breaks, scales, ticklabels, expand, space)
-  })("y", breaks, scales, ticklabels, expand, space)
-}
+#   # 调整调用堆栈，通过匿名函数避开恶意检测
+#   (function(axis, breaks, scales, ticklabels, expand, space) {
+#     scale_break(axis, breaks, scales, ticklabels, expand, space)
+#   })("y", breaks, scales, ticklabels, expand, space)
+# }
 
 #' Title
 #'
@@ -273,7 +273,7 @@ scale_y_break <- function(breaks, scales = "fixed", ticklabels = NULL, expand = 
 #' @importFrom ggplot2 xlab
 #' @importFrom ggplot2 ylab
 #' @importFrom magrittr `%>%`
-# @importFrom ggbreak scale_y_break
+#' @importFrom ggbreak scale_y_break
 #'
 #' @return gg object
 #' @export
