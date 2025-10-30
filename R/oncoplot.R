@@ -252,6 +252,7 @@ oncoplot_gene <- function(mat, ylab = 'percentage', varis_color) {
 #' the first column is sample ID.
 #' @param mapping mapping.
 #' @param clinical_color namesd vector, color of clinical varis.
+#' @importFrom rlang quo_name
 #'
 #' @return a gg object
 #' @export
@@ -264,7 +265,8 @@ oncoplot_clinical <- function(clinical_data, mapping, clinical_color = NULL) {
               axis.text.x = element_blank(),
               plot.background = element_blank())
     if (!is.null(clinical_color)) {
-        colors <- clinical_data[, p$labels$fill] |> unique()
+        fill_var <- quo_name(mapping$fill)
+        colors <- clinical_data[, fill_var] |> unique()
         p <- p + scale_fill_manual(values = clinical_color[colors])
     }
     p
