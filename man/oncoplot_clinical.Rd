@@ -4,7 +4,12 @@
 \alias{oncoplot_clinical}
 \title{oncoplot_clinical}
 \usage{
-oncoplot_clinical(clinical_data, mapping, clinical_color = NULL)
+oncoplot_clinical(
+  clinical_data,
+  mapping,
+  clinical_color = NULL,
+  p_main = p_main
+)
 }
 \arguments{
 \item{clinical_data}{dataframe of clinical data,
@@ -13,6 +18,8 @@ the first column is sample ID.}
 \item{mapping}{mapping.}
 
 \item{clinical_color}{namesd vector, color of clinical varis.}
+
+\item{p_main}{p_main.}
 }
 \value{
 a gg object

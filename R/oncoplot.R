@@ -252,12 +252,17 @@ oncoplot_gene <- function(mat, ylab = 'percentage', varis_color) {
 #' the first column is sample ID.
 #' @param mapping mapping.
 #' @param clinical_color namesd vector, color of clinical varis.
+#' @param p_main p_main.
 #' @importFrom rlang quo_name
 #'
 #' @return a gg object
 #' @export
-oncoplot_clinical <- function(clinical_data, mapping, clinical_color = NULL) {
-    p <- ggplot() + geom_tile(data = clinical_data, mapping = mapping)+
+oncoplot_clinical <- function(clinical_data, mapping, clinical_color = NULL, p_main = p_main) {
+    level <- levels(p_main$data$Sample)
+    rownames(clinical_data) <- clinical_data[, 1]
+    clinical_data <- clinical_data[level, ]
+    clinical_data$ID <- factor(clinical_data$ID, levels = level)
+    p <- ggplot(data = clinical_data) + geom_tile(mapping = mapping)+
         scale_y_discrete(position = "right", expand = c(0,0)) +
         theme(panel.background = element_blank(),
               axis.ticks = element_blank(),
@@ -331,7 +336,7 @@ oncoplot <- function(mat, varis_color = NULL, clinical, clinical_color = NULL, n
     p_cli_list <- lapply(clinicals, function(k) {
         oncoplot_clinical(clinical_data = clinical2,
                           mapping = aes_string(x = ID, y = paste0("y_", k), fill = k),
-                          clinical_color = clinical_color)
+                          clinical_color = clinical_color, p_main = p_main)
     })
     p <- p_main
     for (i in 1:length(p_cli_list)) {
